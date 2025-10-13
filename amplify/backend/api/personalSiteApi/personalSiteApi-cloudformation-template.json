@@ -1,0 +1,421 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "API Gateway for personal site with CORS and security configurations",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    },
+    "functionpitchHandlerName": {
+      "Type": "String",
+      "Default": "functionpitchHandlerName"
+    },
+    "functionleadHandlerName": {
+      "Type": "String",
+      "Default": "functionleadHandlerName"
+    },
+    "functionhealthHandlerName": {
+      "Type": "String",
+      "Default": "functionhealthHandlerName"
+    },
+    "corsOrigin": {
+      "Type": "String",
+      "Default": "http://localhost:3000",
+      "Description": "CORS origin for API Gateway"
+    }
+  },
+  "Resources": {
+    "personalSiteApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Description": "Personal Site API",
+        "Name": {
+          "Fn::Sub": "personalSiteApi-${env}"
+        },
+        "EndpointConfiguration": {
+          "Types": [
+            "REGIONAL"
+          ]
+        }
+      }
+    },
+    "pitchResource": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "personalSiteApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "pitch",
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "leadResource": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "personalSiteApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "lead",
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "healthResource": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "personalSiteApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "health",
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "pitchMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${functionpitchHandlerName}/invocations"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'"
+              }
+            }
+          ]
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "pitchResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "pitchOptionsMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "Type": "MOCK",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Max-Age": "'86400'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Max-Age": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "pitchResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "leadMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${functionleadHandlerName}/invocations"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'"
+              }
+            }
+          ]
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "leadResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "leadOptionsMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "Type": "MOCK",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Max-Age": "'86400'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Max-Age": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "leadResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "healthMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${functionhealthHandlerName}/invocations"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'"
+              }
+            }
+          ]
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "healthResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "healthOptionsMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "Type": "MOCK",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": {
+                  "Ref": "corsOrigin"
+                },
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'GET,POST,OPTIONS'",
+                "method.response.header.Access-Control-Max-Age": "'86400'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          }
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Max-Age": true
+            }
+          }
+        ],
+        "ResourceId": {
+          "Ref": "healthResource"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "DeploymentAPIGW": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "DependsOn": [
+        "pitchMethod",
+        "pitchOptionsMethod",
+        "leadMethod",
+        "leadOptionsMethod",
+        "healthMethod",
+        "healthOptionsMethod"
+      ],
+      "Properties": {
+        "Description": {
+          "Fn::Sub": "The ${env} stage deployment of your API with CORS support."
+        },
+        "StageName": {
+          "Ref": "env"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        }
+      }
+    },
+    "ApiGatewayStage": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "DeploymentAPIGW"
+        },
+        "RestApiId": {
+          "Ref": "personalSiteApi"
+        },
+        "StageName": {
+          "Ref": "env"
+        },
+        "MethodSettings": [
+          {
+            "ResourcePath": "/*",
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "DataTraceEnabled": true,
+            "MetricsEnabled": true,
+            "ThrottlingBurstLimit": 100,
+            "ThrottlingRateLimit": 50
+          }
+        ],
+        "Variables": {
+          "corsOrigin": {
+            "Ref": "corsOrigin"
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "RootUrl": {
+      "Description": "Root URL of the API gateway",
+      "Value": {
+        "Fn::Sub": "https://${personalSiteApi}.execute-api.${AWS::Region}.amazonaws.com/${env}"
+      }
+    },
+    "ApiName": {
+      "Description": "API Friendly name",
+      "Value": "personalSiteApi"
+    },
+    "ApiId": {
+      "Description": "API ID (prefix of API URL)",
+      "Value": {
+        "Ref": "personalSiteApi"
+      }
+    }
+  }
+}

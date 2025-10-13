@@ -1,0 +1,22 @@
+{
+  "name": "Marko - AI • Cloud • Automation",
+  "short_name": "Marko",
+  "description": "Full-stack developer and cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#facc15",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "developer"],
+  "lang": "en-US",
+  "scope": "/",
+  "id": "marko-personal-site"
+}

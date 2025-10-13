@@ -1,0 +1,56 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudWatch Dashboard for personal site monitoring",
+  "Parameters": {
+    "env": {
+      "Type": "String",
+      "Description": "Environment name (dev, staging, prod)"
+    },
+    "functionpitchHandlerName": {
+      "Type": "String",
+      "Description": "Name of the pitch handler Lambda function"
+    },
+    "functionleadHandlerName": {
+      "Type": "String",
+      "Description": "Name of the lead handler Lambda function"
+    },
+    "functionhealthHandlerName": {
+      "Type": "String",
+      "Description": "Name of the health handler Lambda function"
+    }
+  },
+  "Resources": {
+    "PersonalSiteDashboard": {
+      "Type": "AWS::CloudWatch::Dashboard",
+      "Properties": {
+        "DashboardName": {
+          "Fn::Sub": "PersonalSite-${env}"
+        },
+        "DashboardBody": {
+          "Fn::Sub": [
+            "{\"widgets\":[{\"type\":\"metric\",\"x\":0,\"y\":0,\"width\":12,\"height\":6,\"properties\":{\"metrics\":[[\"PersonalSite\",\"RequestCount\",\"Stage\",\"${env}\"],[\".\",\"ErrorCount\",\".\",\".\"],[\".\",\"RateLimitHits\",\".\",\".\"]],\"view\":\"timeSeries\",\"stacked\":false,\"region\":\"${AWS::Region}\",\"title\":\"Request Metrics\",\"period\":300}},{\"type\":\"metric\",\"x\":12,\"y\":0,\"width\":12,\"height\":6,\"properties\":{\"metrics\":[[\"PersonalSite\",\"RequestLatency\",\"Stage\",\"${env}\"]],\"view\":\"timeSeries\",\"stacked\":false,\"region\":\"${AWS::Region}\",\"title\":\"Response Latency\",\"period\":300,\"yAxis\":{\"left\":{\"min\":0}}}},{\"type\":\"metric\",\"x\":0,\"y\":6,\"width\":8,\"height\":6,\"properties\":{\"metrics\":[[\"AWS/Lambda\",\"Duration\",\"FunctionName\",\"${PitchHandlerName}\"],[\".\",\".\",\".\",\"${LeadHandlerName}\"],[\".\",\".\",\".\",\"${HealthHandlerName}\"]],\"view\":\"timeSeries\",\"stacked\":false,\"region\":\"${AWS::Region}\",\"title\":\"Lambda Duration\",\"period\":300}},{\"type\":\"metric\",\"x\":8,\"y\":6,\"width\":8,\"height\":6,\"properties\":{\"metrics\":[[\"AWS/Lambda\",\"Invocations\",\"FunctionName\",\"${PitchHandlerName}\"],[\".\",\".\",\".\",\"${LeadHandlerName}\"],[\".\",\".\",\".\",\"${HealthHandlerName}\"]],\"view\":\"timeSeries\",\"stacked\":false,\"region\":\"${AWS::Region}\",\"title\":\"Lambda Invocations\",\"period\":300}},{\"type\":\"metric\",\"x\":16,\"y\":6,\"width\":8,\"height\":6,\"properties\":{\"metrics\":[[\"AWS/Lambda\",\"Errors\",\"FunctionName\",\"${PitchHandlerName}\"],[\".\",\".\",\".\",\"${LeadHandlerName}\"],[\".\",\".\",\".\",\"${HealthHandlerName}\"]],\"view\":\"timeSeries\",\"stacked\":false,\"region\":\"${AWS::Region}\",\"title\":\"Lambda Errors\",\"period\":300}},{\"type\":\"log\",\"x\":0,\"y\":12,\"width\":24,\"height\":6,\"properties\":{\"query\":\"SOURCE '/aws/lambda/${PitchHandlerName}' | SOURCE '/aws/lambda/${LeadHandlerName}' | SOURCE '/aws/lambda/${HealthHandlerName}'\\n| fields @timestamp, level, message, correlationId, endpoint\\n| filter level = \\\"ERROR\\\"\\n| sort @timestamp desc\\n| limit 100\",\"region\":\"${AWS::Region}\",\"title\":\"Recent Errors\",\"view\":\"table\"}}]}",
+            {
+              "PitchHandlerName": {
+                "Ref": "functionpitchHandlerName"
+              },
+              "LeadHandlerName": {
+                "Ref": "functionleadHandlerName"
+              },
+              "HealthHandlerName": {
+                "Ref": "functionhealthHandlerName"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "DashboardURL": {
+      "Description": "URL of the CloudWatch Dashboard",
+      "Value": {
+        "Fn::Sub": "https://${AWS::Region}.console.aws.amazon.com/cloudwatch/home?region=${AWS::Region}#dashboards:name=${PersonalSiteDashboard}"
+      }
+    }
+  }
+}

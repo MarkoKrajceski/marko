@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-10-13T13:08:47.628Z",
+  "ready": true,
+  "summary": {
+    "total": 56,
+    "passed": 56,
+    "failed": 0,
+    "warnings": 1,
+    "successRate": 100
+  },
+  "errors": [],
+  "warnings": [
+    "Large chunks detected"
+  ]
+}

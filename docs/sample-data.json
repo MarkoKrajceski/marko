@@ -1,0 +1,106 @@
+{
+  "samplePitchRequests": [
+    {
+      "role": "recruiter",
+      "focus": "ai",
+      "expectedResponse": {
+        "pitch": "As an AI-focused developer, I bring deep expertise in machine learning pipelines, automated model deployment, and intelligent automation systems. I've built production ML systems that scale efficiently and integrate seamlessly with existing infrastructure.",
+        "confidence": 0.92
+      }
+    },
+    {
+      "role": "cto",
+      "focus": "cloud",
+      "expectedResponse": {
+        "pitch": "I architect and implement cloud-native solutions that prioritize scalability, cost-efficiency, and operational excellence. My expertise spans serverless architectures, infrastructure as code, and comprehensive observability systems.",
+        "confidence": 0.95
+      }
+    },
+    {
+      "role": "product",
+      "focus": "automation",
+      "expectedResponse": {
+        "pitch": "I transform manual processes into intelligent, automated workflows that accelerate product delivery and reduce operational overhead. My focus is on building systems that enhance team productivity and product reliability.",
+        "confidence": 0.88
+      }
+    },
+    {
+      "role": "founder",
+      "focus": "cloud",
+      "expectedResponse": {
+        "pitch": "I help startups build scalable, cost-effective cloud infrastructure that grows with your business. My approach focuses on rapid deployment, automated scaling, and comprehensive monitoring to support your growth trajectory.",
+        "confidence": 0.90
+      }
+    }
+  ],
+  "sampleLeadRequests": [
+    {
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "message": "Interested in discussing cloud automation solutions for our startup. We're looking to scale our infrastructure efficiently."
+    },
+    {
+      "name": "Sarah Johnson",
+      "email": "sarah.j@techcorp.com",
+      "message": "We need help implementing AI-driven automation in our development pipeline. Would love to schedule a consultation."
+    },
+    {
+      "name": "Mike Chen",
+      "email": "m.chen@innovate.io",
+      "message": "Looking for expertise in serverless architecture and cost optimization. Can we set up a call to discuss our requirements?"
+    }
+  ],
+  "testScenarios": {
+    "rateLimiting": {
+      "description": "Test rate limiting by making multiple requests from the same IP",
+      "requests": [
+        {
+          "endpoint": "/pitch",
+          "method": "POST",
+          "body": {"role": "cto", "focus": "cloud"},
+          "expectedStatus": 200
+        },
+        {
+          "endpoint": "/pitch",
+          "method": "POST",
+          "body": {"role": "cto", "focus": "ai"},
+          "expectedStatus": 200,
+          "note": "Should succeed within rate limit"
+        },
+        {
+          "endpoint": "/pitch",
+          "method": "POST",
+          "body": {"role": "founder", "focus": "automation"},
+          "expectedStatus": 429,
+          "note": "Should fail due to rate limiting (if limit is 2 per minute)"
+        }
+      ]
+    },
+    "validation": {
+      "description": "Test input validation with invalid data",
+      "requests": [
+        {
+          "endpoint": "/pitch",
+          "method": "POST",
+          "body": {"role": "invalid", "focus": "cloud"},
+          "expectedStatus": 400,
+          "expectedError": "Invalid role"
+        },
+        {
+          "endpoint": "/pitch",
+          "method": "POST",
+          "body": {"role": "cto"},
+          "expectedStatus": 400,
+          "expectedError": "Missing focus"
+        },
+        {
+          "endpoint": "/lead",
+          "method": "POST",
+          "body": {"name": "Test", "email": "invalid-email"},
+          "expectedStatus": 400,
+          "expectedError": "Invalid email format"
+        }
+      ]
+    }
+  }
+}

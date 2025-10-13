@@ -1,0 +1,97 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-personalsite-dev-authRole",
+      "UnauthRoleName": "amplify-personalsite-dev-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::ACCOUNT:role/amplify-personalsite-dev-authRole",
+      "UnauthRoleArn": "arn:aws:iam::ACCOUNT:role/amplify-personalsite-dev-unauthRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-personalsite-dev-deployment",
+      "UnauthRolePolicy": "amplify-personalsite-dev-unauthRole-policy",
+      "StackName": "amplify-personalsite-dev",
+      "StackId": "arn:aws:cloudformation:us-east-1:ACCOUNT:stack/amplify-personalsite-dev/uuid"
+    }
+  },
+  "api": {
+    "personalSiteApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "pitchHandler",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "leadHandler",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "healthHandler",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "function": {
+    "pitchHandler": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "personalSiteData",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "leadHandler": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "personalSiteData",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "healthHandler": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
+    }
+  },
+  "storage": {
+    "personalSiteData": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "providerPlugin": "awscloudformation",
+      "type": "manual"
+    }
+  }
+}

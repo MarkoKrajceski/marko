@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-10-13T13:06:37.290Z",
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "successRate": 100
+  },
+  "config": {
+    "baseUrl": "http://localhost:3000",
+    "apiUrl": "http://localhost:3000/api",
+    "timeout": 10000,
+    "retries": 3
+  },
+  "details": [],
+  "errors": []
+}

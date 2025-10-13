@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "storagePersonalSiteDataName",
+      "environmentVariableName": "STORAGE_PERSONALSITEDATA_NAME"
+    },
+    {
+      "cloudFormationParameterName": "corsOrigin",
+      "environmentVariableName": "CORS_ORIGIN"
+    }
+  ]
+}
