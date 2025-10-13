@@ -182,7 +182,7 @@ export function sanitizeEmail(email: string): string | null {
  * @param data - Form data object
  * @returns Sanitized and validated data
  */
-export function sanitizeFormData(data: Record<string, any>): {
+export function sanitizeFormData(data: Record<string, unknown>): {
   sanitized: Record<string, string>;
   errors: string[];
 } {
@@ -190,7 +190,7 @@ export function sanitizeFormData(data: Record<string, any>): {
   const errors: string[] = [];
   
   // Sanitize name field
-  if (data.name) {
+  if (data.name && typeof data.name === 'string') {
     const name = sanitizeString(data.name);
     if (name.length < 2) {
       errors.push('Name must be at least 2 characters long');
@@ -204,7 +204,7 @@ export function sanitizeFormData(data: Record<string, any>): {
   }
   
   // Sanitize email field
-  if (data.email) {
+  if (data.email && typeof data.email === 'string') {
     const email = sanitizeEmail(data.email);
     if (!email) {
       errors.push('Please provide a valid email address');
@@ -216,7 +216,7 @@ export function sanitizeFormData(data: Record<string, any>): {
   }
   
   // Sanitize message field
-  if (data.message) {
+  if (data.message && typeof data.message === 'string') {
     const message = sanitizeString(data.message);
     if (message.length < 10) {
       errors.push('Message must be at least 10 characters long');

@@ -295,8 +295,8 @@ export const isValidFocus = (focus: string): focus is FocusArea => {
   return Object.values(FocusArea).includes(focus as FocusArea);
 };
 
-export const isErrorResponse = (response: any): response is ErrorResponse => {
-  return response && response.error === true;
+export const isErrorResponse = (response: unknown): response is ErrorResponse => {
+  return !!(response && typeof response === 'object' && response !== null && 'error' in response && (response as ErrorResponse).error === true);
 };
 
 export const isPitchAnalyticsItem = (item: DynamoDBItem): item is PitchAnalyticsItem => {
@@ -357,7 +357,7 @@ export class ApiClient {
     }
   }
 
-  async post<T>(endpoint: string, data: any): Promise<T> {
+  async post<T>(endpoint: string, data: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
