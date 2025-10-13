@@ -1,0 +1,18 @@
+[
+  {
+    "Key": "user:Stack",
+    "Value": "{project-env}"
+  },
+  {
+    "Key": "user:Application",
+    "Value": "{project-name}"
+  },
+  {
+    "Key": "user:Environment",
+    "Value": "{project-env}"
+  },
+  {
+    "Key": "user:Project",
+    "Value": "personal-site"
+  }
+]

@@ -41,6 +41,9 @@
     "validate:task-9.2": "node scripts/final-validation.js"
   },
   "dependencies": {
+    "@aws-amplify/backend": "^1.16.1",
+    "@aws-amplify/backend-cli": "^1.8.0",
+    "aws-amplify": "^6.15.7",
     "clsx": "^2.1.1",
     "critters": "^0.0.23",
     "next": "15.5.4",

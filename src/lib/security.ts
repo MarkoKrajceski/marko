@@ -21,7 +21,7 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 export function generateCSP(stage: 'dev' | 'staging' | 'prod' = 'prod'): string {
   const isDevelopment = stage === 'dev';
-  
+
   // Base CSP directives
   const csp = {
     'default-src': ["'self'"],
@@ -60,7 +60,7 @@ export function generateCSP(stage: 'dev' | 'staging' | 'prod' = 'prod'): string 
     'frame-ancestors': ["'none'"], // Prevent framing by others
     'upgrade-insecure-requests': [], // Upgrade HTTP to HTTPS
   };
-  
+
   // Convert to CSP string
   return Object.entries(csp)
     .map(([directive, sources]) => {
@@ -82,16 +82,16 @@ export function generateCSP(stage: 'dev' | 'staging' | 'prod' = 'prod'): string 
 export const SECURITY_HEADERS = {
   // Prevent MIME type sniffing
   'X-Content-Type-Options': 'nosniff',
-  
+
   // Prevent clickjacking
   'X-Frame-Options': 'DENY',
-  
+
   // Enable XSS protection
   'X-XSS-Protection': '1; mode=block',
-  
+
   // Referrer policy
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  
+
   // Permissions policy (formerly Feature Policy)
   'Permissions-Policy': [
     'camera=()',
@@ -103,10 +103,10 @@ export const SECURITY_HEADERS = {
     'gyroscope=()',
     'accelerometer=()',
   ].join(', '),
-  
+
   // Strict Transport Security (HTTPS only)
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  
+
   // Expect-CT header for certificate transparency
   'Expect-CT': 'max-age=86400, enforce',
 } as const;
@@ -118,17 +118,17 @@ export const SECURITY_HEADERS = {
  * @returns Response with security headers applied
  */
 export function applySecurityHeaders(
-  response: NextResponse, 
+  response: NextResponse,
   stage: 'dev' | 'staging' | 'prod' = 'prod'
 ): NextResponse {
   // Apply standard security headers
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-  
+
   // Apply CSP header
   response.headers.set('Content-Security-Policy', generateCSP(stage));
-  
+
   return response;
 }
 
@@ -145,7 +145,7 @@ export function sanitizeString(input: string): string {
   if (typeof input !== 'string') {
     return '';
   }
-  
+
   return input
     .replace(/[<>]/g, '') // Remove angle brackets
     .replace(/javascript:/gi, '') // Remove javascript: protocol
@@ -164,16 +164,16 @@ export function sanitizeEmail(email: string): string | null {
   if (typeof email !== 'string') {
     return null;
   }
-  
+
   const sanitized = email.toLowerCase().trim();
-  
+
   // Basic email validation regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
+
   if (!emailRegex.test(sanitized) || sanitized.length > 254) {
     return null;
   }
-  
+
   return sanitized;
 }
 
@@ -188,7 +188,7 @@ export function sanitizeFormData(data: Record<string, unknown>): {
 } {
   const sanitized: Record<string, string> = {};
   const errors: string[] = [];
-  
+
   // Sanitize name field
   if (data.name && typeof data.name === 'string') {
     const name = sanitizeString(data.name);
@@ -202,7 +202,7 @@ export function sanitizeFormData(data: Record<string, unknown>): {
   } else {
     errors.push('Name is required');
   }
-  
+
   // Sanitize email field
   if (data.email && typeof data.email === 'string') {
     const email = sanitizeEmail(data.email);
@@ -214,7 +214,7 @@ export function sanitizeFormData(data: Record<string, unknown>): {
   } else {
     errors.push('Email is required');
   }
-  
+
   // Sanitize message field
   if (data.message && typeof data.message === 'string') {
     const message = sanitizeString(data.message);
@@ -228,7 +228,7 @@ export function sanitizeFormData(data: Record<string, unknown>): {
   } else {
     errors.push('Message is required');
   }
-  
+
   return { sanitized, errors };
 }
 
@@ -243,12 +243,12 @@ class ClientRateLimiter {
   private requests: Map<string, number[]> = new Map();
   private maxRequests: number;
   private windowMs: number;
-  
+
   constructor(maxRequests: number = 5, windowMs: number = 60000) {
     this.maxRequests = maxRequests;
     this.windowMs = windowMs;
   }
-  
+
   /**
    * Check if request should be rate limited
    * @param identifier - Unique identifier (IP, user ID, etc.)
@@ -257,32 +257,32 @@ class ClientRateLimiter {
   isRateLimited(identifier: string): boolean {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-    
+
     // Get existing requests for this identifier
     const requests = this.requests.get(identifier) || [];
-    
+
     // Filter out old requests
     const recentRequests = requests.filter(time => time > windowStart);
-    
+
     // Check if limit exceeded
     if (recentRequests.length >= this.maxRequests) {
       return true;
     }
-    
+
     // Add current request
     recentRequests.push(now);
     this.requests.set(identifier, recentRequests);
-    
+
     return false;
   }
-  
+
   /**
    * Clear old entries to prevent memory leaks
    */
   cleanup(): void {
     const now = Date.now();
     const cutoff = now - this.windowMs * 2; // Keep some buffer
-    
+
     for (const [identifier, requests] of this.requests.entries()) {
       const recentRequests = requests.filter(time => time > cutoff);
       if (recentRequests.length === 0) {
@@ -315,12 +315,12 @@ if (typeof window === 'undefined') {
 export function validateOrigin(request: NextRequest, allowedOrigins: string[]): boolean {
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
-  
+
   // Check origin header
   if (origin && allowedOrigins.includes(origin)) {
     return true;
   }
-  
+
   // Check referer header as fallback
   if (referer) {
     try {
@@ -331,7 +331,7 @@ export function validateOrigin(request: NextRequest, allowedOrigins: string[]): 
       return false;
     }
   }
-  
+
   return false;
 }
 
@@ -343,11 +343,11 @@ export function validateOrigin(request: NextRequest, allowedOrigins: string[]): 
 export function generateSecureToken(length: number = 32): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  
+
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  
+
   return result;
 }
 

@@ -1,0 +1,21 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "storagePersonalSiteDataName",
+      "environmentVariableName": "STORAGE_PERSONALSITEDATA_NAME"
+    },
+    {
+      "cloudFormationParameterName": "rateLimitMax",
+      "environmentVariableName": "RATE_LIMIT_MAX"
+    },
+    {
+      "cloudFormationParameterName": "rateLimitWindow",
+      "environmentVariableName": "RATE_LIMIT_WINDOW"
+    },
+    {
+      "cloudFormationParameterName": "corsOrigin",
+      "environmentVariableName": "CORS_ORIGIN"
+    }
+  ]
+}
