@@ -11,6 +11,13 @@ applications:
             - export NEXT_PUBLIC_API_URL="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com/api"
             - export NEXT_PUBLIC_SITE_URL="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com"
             - export NEXT_PUBLIC_STAGE="prod"
+            - export API_ENDPOINT="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com/api"
+            - export STAGE="prod"
+            - export TABLE_NAME="personalSiteData-prod"
+            - export RATE_LIMIT_MAX="30"
+            - export RATE_LIMIT_WINDOW="60"
+            - export AWS_REGION="eu-south-1"
+            - export CORS_ORIGIN="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com"
             - npm run build
       artifacts:
         baseDirectory: .next
