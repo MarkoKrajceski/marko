@@ -315,6 +315,7 @@ if (typeof window === 'undefined') {
 export function validateOrigin(request: NextRequest, allowedOrigins: string[]): boolean {
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
+  const host = request.headers.get('host');
 
   // Check origin header
   if (origin && allowedOrigins.includes(origin)) {
@@ -330,6 +331,13 @@ export function validateOrigin(request: NextRequest, allowedOrigins: string[]): 
     } catch {
       return false;
     }
+  }
+
+  // For same-origin requests (common in development), check if host matches allowed origins
+  if (!origin && !referer && host) {
+    const hostOrigin = `http://${host}`;
+    const httpsHostOrigin = `https://${host}`;
+    return allowedOrigins.includes(hostOrigin) || allowedOrigins.includes(httpsHostOrigin);
   }
 
   return false;

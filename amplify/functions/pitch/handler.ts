@@ -1,59 +1,149 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 
+// Pitch generation templates with confidence scores
+const PITCH_TEMPLATES = {
+  recruiter: {
+    ai: {
+      pitch: "I'm a full-stack developer with deep expertise in applied AI and machine learning. I've built production ML pipelines, implemented LLM integrations, and automated complex workflows. I focus on practical AI solutions that deliver real business value, not just proof-of-concepts. My experience spans from data engineering to model deployment, with a strong emphasis on scalable, maintainable systems.",
+      confidence: 0.95
+    },
+    cloud: {
+      pitch: "I'm a cloud-native developer specializing in AWS serverless architectures. I design and build scalable, cost-effective solutions using Lambda, API Gateway, DynamoDB, and modern CI/CD practices. My approach emphasizes infrastructure as code, observability, and security best practices. I've helped teams migrate to cloud-first architectures and reduce operational overhead significantly.",
+      confidence: 0.98
+    },
+    automation: {
+      pitch: "I'm passionate about eliminating manual processes through intelligent automation. I build robust CI/CD pipelines, infrastructure automation, and workflow orchestration systems. My expertise includes GitHub Actions, AWS automation, monitoring systems, and creating developer-friendly tooling. I believe in shipping fast while maintaining high quality through automated testing and deployment.",
+      confidence: 0.92
+    }
+  },
+  cto: {
+    ai: {
+      pitch: "I architect and implement AI-driven solutions with a focus on production readiness and scalability. My experience includes building ML infrastructure, implementing vector databases, fine-tuning models, and creating AI-powered features that scale to millions of users. I understand both the technical complexity and business implications of AI integration, ensuring solutions are robust, ethical, and maintainable.",
+      confidence: 0.88
+    },
+    cloud: {
+      pitch: "I design cloud-native architectures that scale efficiently and cost-effectively. My expertise spans microservices, serverless computing, container orchestration, and multi-region deployments. I've led cloud migrations, implemented disaster recovery strategies, and built systems that handle massive scale while maintaining 99.9% uptime. I focus on architectural decisions that support long-term growth and team productivity.",
+      confidence: 0.95
+    },
+    automation: {
+      pitch: "I build automation systems that transform how engineering teams operate. From infrastructure provisioning to deployment pipelines, I create solutions that reduce manual work, improve reliability, and accelerate development cycles. My approach includes comprehensive monitoring, automated testing, and self-healing systems. I've helped teams achieve 10x faster deployment cycles while improving system reliability.",
+      confidence: 0.90
+    }
+  },
+  product: {
+    ai: {
+      pitch: "I translate AI capabilities into user-facing features that deliver real value. I understand how to integrate AI seamlessly into product experiences, from recommendation systems to intelligent automation. My focus is on creating AI features that feel natural and helpful, not gimmicky. I work closely with product teams to identify high-impact AI opportunities and implement them with proper user feedback loops.",
+      confidence: 0.85
+    },
+    cloud: {
+      pitch: "I build cloud-native products that scale from startup to enterprise. My experience with modern cloud architectures ensures products can handle rapid growth while maintaining performance and cost efficiency. I focus on creating resilient, observable systems that provide excellent user experiences while being economical to operate and maintain.",
+      confidence: 0.92
+    },
+    automation: {
+      pitch: "I create products that automate complex workflows and make users more productive. My approach combines deep technical knowledge with user empathy to build automation tools that are both powerful and intuitive. I believe the best automation products are invisible - they just make everything work better without users having to think about them.",
+      confidence: 0.88
+    }
+  },
+  founder: {
+    ai: {
+      pitch: "As someone who understands both the technical and business sides of AI, I can help you navigate the opportunities and challenges of building an AI-driven company. My experience spans from prototype to production, and I understand how to build AI solutions that create sustainable business value while managing technical debt and scaling challenges.",
+      confidence: 0.82
+    },
+    cloud: {
+      pitch: "I bring the technical expertise to help you build a cloud-first company from the ground up. My experience with scalable architectures and cost optimization can help you avoid common pitfalls and build a technical foundation that supports rapid growth. I understand the unique challenges founders face and can help you make technical decisions that align with your business goals.",
+      confidence: 0.90
+    },
+    automation: {
+      pitch: "I'm passionate about helping founders build companies that leverage automation to create competitive advantages. My experience in building automation tools and optimizing processes can help you create a more efficient, scalable business. I understand that as a founder, your time is your most valuable resource, and I can help you build systems that multiply your impact.",
+      confidence: 0.87
+    }
+  }
+};
+
+// Input validation
+function validatePitchRequest(data: any) {
+  const errors: string[] = [];
+  const sanitized: any = {};
+  
+  const allowedRoles = ['recruiter', 'cto', 'product', 'founder'];
+  if (!data.role || !allowedRoles.includes(data.role)) {
+    errors.push('Role must be one of: ' + allowedRoles.join(', '));
+  } else {
+    sanitized.role = data.role;
+  }
+  
+  const allowedFocus = ['ai', 'cloud', 'automation'];
+  if (!data.focus || !allowedFocus.includes(data.focus)) {
+    errors.push('Focus must be one of: ' + allowedFocus.join(', '));
+  } else {
+    sanitized.focus = data.focus;
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    sanitized,
+    errors
+  };
+}
+
 export const handler: APIGatewayProxyHandler = async (event) => {
   console.log('Pitch function called', JSON.stringify(event, null, 2));
   
   try {
-    // Parse request body
+    // Validate HTTP method
+    if (event.httpMethod !== 'POST') {
+      return {
+        statusCode: 405,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+        body: JSON.stringify({
+          error: true,
+          message: 'Method not allowed',
+          code: 'METHOD_NOT_ALLOWED',
+          timestamp: new Date().toISOString()
+        })
+      };
+    }
+
     const body = event.body ? JSON.parse(event.body) : {};
-    const { role, focus } = body;
     
-    // Validate input
-    if (!role || !focus) {
+    // Validate request
+    const validation = validatePitchRequest(body);
+    if (!validation.isValid) {
       return {
         statusCode: 400,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         },
         body: JSON.stringify({
           error: true,
-          message: 'Role and focus are required',
+          message: validation.errors.join(', '),
           code: 'VALIDATION_ERROR',
           timestamp: new Date().toISOString()
         })
       };
     }
+
+    const { role, focus } = validation.sanitized;
     
-    // Generate pitch based on role and focus
-    const pitches = {
-      'recruiter-ai': "I'm Marko, a seasoned developer who's passionate about leveraging AI to solve real-world problems. With my experience in machine learning and full-stack development, I can help your team build intelligent applications that drive business value. I'm particularly excited about opportunities where I can combine my technical expertise with AI innovation to create solutions that make a meaningful impact.",
-      'recruiter-cloud': "I'm Marko, a cloud-native developer with extensive experience in AWS, serverless architectures, and scalable system design. I specialize in building robust, cost-effective solutions that can handle enterprise-scale workloads. My expertise in DevOps and infrastructure-as-code ensures that the systems I build are not only performant but also maintainable and secure.",
-      'recruiter-automation': "I'm Marko, a developer who thrives on automating complex processes and building efficient workflows. My experience spans from CI/CD pipeline optimization to creating intelligent automation tools that save teams countless hours. I believe in the power of automation to eliminate repetitive tasks and allow developers to focus on what they do best - creating innovative solutions.",
-      'cto-ai': "As a technical leader, I understand the strategic importance of AI in today's competitive landscape. I bring both the technical depth to implement sophisticated AI solutions and the business acumen to ensure they align with your company's objectives. My approach focuses on building AI systems that are not just technically impressive, but also practical, scalable, and deliver measurable ROI.",
-      'cto-cloud': "I'm Marko, and I specialize in architecting cloud-native solutions that scale with your business. My expertise in AWS, microservices, and serverless computing enables me to design systems that are both cost-effective and highly available. I understand the challenges of cloud migration and can help your team navigate the complexities while maximizing the benefits of cloud adoption.",
-      'cto-automation': "I believe that strategic automation is key to maintaining competitive advantage in today's fast-paced market. My experience in building automation frameworks and optimizing development workflows can help your team increase velocity while maintaining quality. I focus on creating automation solutions that not only solve immediate problems but also provide a foundation for future growth.",
-      'product-ai': "I'm passionate about creating AI-powered products that users love. My technical background combined with a user-centric approach allows me to build AI features that are both powerful and intuitive. I understand how to balance technical capabilities with user experience to create products that truly solve user problems and drive engagement.",
-      'product-cloud': "I specialize in building cloud-native products that can scale from startup to enterprise. My experience with modern cloud architectures ensures that the products I build can handle rapid growth while maintaining performance and reliability. I focus on creating solutions that provide excellent user experiences while being cost-effective to operate.",
-      'product-automation': "I'm excited about building products that automate complex workflows and make users more productive. My approach combines deep technical knowledge with user empathy to create automation tools that are both powerful and easy to use. I believe the best automation products are those that users don't even realize they're using - they just make everything work better.",
-      'founder-ai': "As someone who understands both the technical and business sides of AI, I can help you navigate the opportunities and challenges of building an AI-driven company. My experience spans from prototype to production, and I understand how to build AI solutions that not only work technically but also create sustainable business value. I'm passionate about using AI to solve meaningful problems and create positive impact.",
-      'founder-cloud': "I bring the technical expertise to help you build a cloud-first company from the ground up. My experience with scalable architectures and cost optimization can help you avoid common pitfalls and build a technical foundation that supports rapid growth. I understand the unique challenges that founders face and can help you make technical decisions that align with your business goals.",
-      'founder-automation': "I'm passionate about helping founders build companies that leverage automation to create competitive advantages. My experience in building automation tools and optimizing processes can help you create a more efficient, scalable business. I understand that as a founder, your time is your most valuable resource, and I can help you build systems that multiply your impact."
-    };
+    // Get pitch template
+    const template = PITCH_TEMPLATES[role as keyof typeof PITCH_TEMPLATES]?.[focus as keyof typeof PITCH_TEMPLATES.recruiter];
     
-    const pitchKey = `${role}-${focus}`;
-    const pitch = pitches[pitchKey as keyof typeof pitches];
-    
-    if (!pitch) {
+    if (!template) {
       return {
         statusCode: 400,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
         },
         body: JSON.stringify({
           error: true,
@@ -70,12 +160,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
       },
       body: JSON.stringify({
         success: true,
-        pitch,
+        pitch: template.pitch,
+        confidence: template.confidence,
         role,
         focus,
         timestamp: new Date().toISOString()
@@ -90,8 +181,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
       },
       body: JSON.stringify({
         error: true,
