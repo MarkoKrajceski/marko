@@ -1,10 +1,10 @@
 {
-  "timestamp": "2025-10-13T13:06:37.290Z",
+  "timestamp": "2025-10-13T13:33:44.341Z",
   "summary": {
-    "total": 5,
-    "passed": 5,
-    "failed": 0,
-    "successRate": 100
+    "total": 28,
+    "passed": 16,
+    "failed": 12,
+    "successRate": 57.1
   },
   "config": {
     "baseUrl": "http://localhost:3000",
@@ -12,6 +12,70 @@
     "timeout": 10000,
     "retries": 3
   },
-  "details": [],
-  "errors": []
+  "details": [
+    {
+      "test": "Health endpoint accessible",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Pitch generation (recruiter/ai)",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Pitch generation (cto/cloud)",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Pitch generation (product/automation)",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Pitch generation (founder/ai)",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Lead capture endpoint accessible",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Invalid pitch request handled",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Empty lead request handled",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "Non-existent endpoint handled",
+      "passed": false,
+      "details": "fetch failed"
+    },
+    {
+      "test": "API endpoints generate logs",
+      "passed": false,
+      "details": "fetch failed"
+    }
+  ],
+  "errors": [
+    "Health endpoint accessible",
+    "Pitch generation (recruiter/ai)",
+    "Pitch generation (cto/cloud)",
+    "Pitch generation (product/automation)",
+    "Pitch generation (founder/ai)",
+    "Lead capture endpoint accessible",
+    "Invalid pitch request handled",
+    "Empty lead request handled",
+    "Non-existent endpoint handled",
+    "Rate limiting allows normal requests",
+    "Rate limiting blocks excessive requests",
+    "API endpoints generate logs"
+  ]
 }
