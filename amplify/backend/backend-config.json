@@ -3,28 +3,28 @@
     "personalSiteApi": {
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "pitchHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "pitchHandler"
         },
         {
-          "category": "function",
-          "resourceName": "leadHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "leadHandler"
         },
         {
-          "category": "function",
-          "resourceName": "healthHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "healthHandler"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -32,18 +32,8 @@
     }
   },
   "function": {
-    "pitchHandler": {
+    "healthHandler": {
       "build": true,
-      "dependsOn": [
-        {
-          "category": "storage",
-          "resourceName": "personalSiteData",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -51,19 +41,29 @@
       "build": true,
       "dependsOn": [
         {
-          "category": "storage",
-          "resourceName": "personalSiteData",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "storage",
+          "resourceName": "personalSiteData"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "healthHandler": {
+    "pitchHandler": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "personalSiteData"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }

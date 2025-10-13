@@ -9,89 +9,90 @@
       "DeploymentBucketName": "amplify-personalsite-dev-deployment",
       "UnauthRolePolicy": "amplify-personalsite-dev-unauthRole-policy",
       "StackName": "amplify-personalsite-dev",
-      "StackId": "arn:aws:cloudformation:us-east-1:ACCOUNT:stack/amplify-personalsite-dev/uuid"
+      "StackId": "arn:aws:cloudformation:us-east-1:ACCOUNT:stack/amplify-personalsite-dev/uuid",
+      "AmplifyAppId": "APP_ID"
     }
   },
   "api": {
     "personalSiteApi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "pitchHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "pitchHandler"
         },
         {
-          "category": "function",
-          "resourceName": "leadHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "leadHandler"
         },
         {
-          "category": "function",
-          "resourceName": "healthHandler",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "function",
+          "resourceName": "healthHandler"
         }
-      ]
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "function": {
-    "pitchHandler": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
+    "healthHandler": {
       "build": true,
-      "dependsOn": [
-        {
-          "category": "storage",
-          "resourceName": "personalSiteData",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     },
     "leadHandler": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
       "build": true,
       "dependsOn": [
         {
-          "category": "storage",
-          "resourceName": "personalSiteData",
           "attributes": [
             "Name",
             "Arn"
-          ]
+          ],
+          "category": "storage",
+          "resourceName": "personalSiteData"
         }
-      ]
-    },
-    "healthHandler": {
-      "service": "Lambda",
+      ],
       "providerPlugin": "awscloudformation",
-      "build": true
-    }
-  },
-  "storage": {
-    "personalSiteData": {
-      "service": "DynamoDB",
-      "providerPlugin": "awscloudformation"
+      "service": "Lambda"
+    },
+    "pitchHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "personalSiteData"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "hosting": {
     "amplifyhosting": {
-      "service": "amplifyhosting",
       "providerPlugin": "awscloudformation",
+      "service": "amplifyhosting",
       "type": "manual"
+    }
+  },
+  "storage": {
+    "personalSiteData": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }
