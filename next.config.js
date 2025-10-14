@@ -24,6 +24,11 @@ const nextConfig = {
     NEXT_PUBLIC_STAGE: stage,
     NEXT_PUBLIC_API_URL: apiUrl,
     NEXT_PUBLIC_SITE_URL: siteUrl,
+    // Lambda function URLs (server-side only)
+    PITCH_LAMBDA_URL: process.env.PITCH_LAMBDA_URL,
+    LEAD_LAMBDA_URL: process.env.LEAD_LAMBDA_URL,
+    HEALTH_LAMBDA_URL: process.env.HEALTH_LAMBDA_URL,
+    NOTIFICATION_EMAIL: process.env.NOTIFICATION_EMAIL,
   },
 
   // Public runtime config for client-side access
@@ -44,6 +49,11 @@ const nextConfig = {
     rateLimitWindow: parseInt(process.env.RATE_LIMIT_WINDOW || '60'),
     awsRegion: process.env.AWS_REGION || 'us-east-1',
     corsOrigin: process.env.CORS_ORIGIN || siteUrl,
+    // Lambda function URLs
+    pitchLambdaUrl: process.env.PITCH_LAMBDA_URL,
+    leadLambdaUrl: process.env.LEAD_LAMBDA_URL,
+    healthLambdaUrl: process.env.HEALTH_LAMBDA_URL,
+    notificationEmail: process.env.NOTIFICATION_EMAIL,
   },
 
   // Image optimization
