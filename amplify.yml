@@ -18,11 +18,10 @@ applications:
             - export RATE_LIMIT_WINDOW="60"
             - export AWS_REGION="eu-south-1"
             - export CORS_ORIGIN="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com"
-            # Extract Lambda function URLs from amplify_outputs.json
             - export PITCH_LAMBDA_URL=$(node -p "JSON.parse(require('fs').readFileSync('amplify_outputs.json', 'utf8')).custom?.pitchFunctionUrl || ''")
             - export LEAD_LAMBDA_URL=$(node -p "JSON.parse(require('fs').readFileSync('amplify_outputs.json', 'utf8')).custom?.leadFunctionUrl || ''")
             - export HEALTH_LAMBDA_URL=$(node -p "JSON.parse(require('fs').readFileSync('amplify_outputs.json', 'utf8')).custom?.healthFunctionUrl || ''")
-            - echo "Lambda URLs - Pitch: $PITCH_LAMBDA_URL, Lead: $LEAD_LAMBDA_URL, Health: $HEALTH_LAMBDA_URL"
+            - echo "Lambda URLs - Pitch:$PITCH_LAMBDA_URL Lead:$LEAD_LAMBDA_URL Health:$HEALTH_LAMBDA_URL"
             - npm run build
       artifacts:
         baseDirectory: .next
