@@ -40,10 +40,13 @@ These variables are only available on the Next.js server:
 
 ```bash
 API_ENDPOINT=https://api.marko.dev
-PITCH_LAMBDA_URL=https://api.marko.dev/pitch
-LEAD_LAMBDA_URL=https://api.marko.dev/lead
-HEALTH_LAMBDA_URL=https://api.marko.dev/health
+# Lambda function URLs are automatically extracted from amplify_outputs.json during build
+PITCH_LAMBDA_URL=https://xyz123.lambda-url.us-east-1.on.aws/
+LEAD_LAMBDA_URL=https://abc456.lambda-url.us-east-1.on.aws/
+HEALTH_LAMBDA_URL=https://def789.lambda-url.us-east-1.on.aws/
 ```
+
+**Note**: The `*_LAMBDA_URL` variables are automatically set during the Amplify build process by extracting the actual Lambda function URLs from `amplify_outputs.json`. You don't need to manually configure these in the Amplify Console.
 
 ### 4. Build Variables (Amplify)
 These variables are automatically set by Amplify during deployment:
@@ -75,6 +78,10 @@ AMPLIFY_COMMIT_ID=commit-hash
    NEXT_PUBLIC_SITE_URL=http://localhost:3000
    NEXT_PUBLIC_STAGE=dev
    API_ENDPOINT=http://localhost:3000/api
+   # For local development, Lambda URLs point to Next.js API routes
+   PITCH_LAMBDA_URL=http://localhost:3000/api/pitch
+   LEAD_LAMBDA_URL=http://localhost:3000/api/lead
+   HEALTH_LAMBDA_URL=http://localhost:3000/api/health
    ```
 
 ### Staging (Amplify Console)
@@ -92,6 +99,7 @@ NEXT_PUBLIC_API_URL=https://api-staging.marko.dev
 NEXT_PUBLIC_SITE_URL=https://staging.marko.dev
 NEXT_PUBLIC_STAGE=staging
 API_ENDPOINT=https://api-staging.marko.dev
+# Lambda URLs are automatically set during build - no manual configuration needed
 ```
 
 ### Production (Amplify Console)
@@ -109,7 +117,32 @@ NEXT_PUBLIC_API_URL=https://api.marko.dev
 NEXT_PUBLIC_SITE_URL=https://marko.dev
 NEXT_PUBLIC_STAGE=prod
 API_ENDPOINT=https://api.marko.dev
+# Lambda URLs are automatically set during build - no manual configuration needed
 ```
+
+## Lambda Function URL Management
+
+### Automatic URL Injection
+
+The application automatically manages Lambda function URLs through the following process:
+
+1. **Backend Deployment**: When Amplify deploys the backend, each Lambda function gets a unique function URL
+2. **Output Generation**: The backend configuration exports these URLs to `amplify_outputs.json`
+3. **Build-Time Extraction**: During the frontend build, the URLs are extracted and set as environment variables
+4. **Runtime Usage**: The Next.js API routes use these URLs to proxy requests to the actual Lambda functions
+
+### Manual Override (Development Only)
+
+For local development, you can override the Lambda URLs in `.env.local`:
+
+```bash
+# Override for local testing with deployed Lambdas
+PITCH_LAMBDA_URL=https://your-actual-lambda-url.lambda-url.us-east-1.on.aws/
+LEAD_LAMBDA_URL=https://your-actual-lambda-url.lambda-url.us-east-1.on.aws/
+HEALTH_LAMBDA_URL=https://your-actual-lambda-url.lambda-url.us-east-1.on.aws/
+```
+
+**Warning**: Only do this for development testing. Production URLs are automatically managed.
 
 ## Amplify Console Configuration
 

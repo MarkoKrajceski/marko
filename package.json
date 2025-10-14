@@ -14,6 +14,7 @@
     "validate:env:frontend": "node scripts/validate-env.js --frontend",
     "validate:env:backend": "node scripts/validate-env.js --backend",
     "validate:env:server": "node scripts/validate-env.js --server",
+    "extract:lambda-urls": "node scripts/extract-lambda-urls.js",
     "setup:monitoring": "node scripts/setup-monitoring.js",
     "setup:monitoring:dev": "node scripts/setup-monitoring.js dev",
     "setup:monitoring:staging": "node scripts/setup-monitoring.js staging",

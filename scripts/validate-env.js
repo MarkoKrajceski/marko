@@ -113,8 +113,35 @@ function validateServerEnv() {
     API_ENDPOINT: requireEnvUrl('API_ENDPOINT', process.env.API_ENDPOINT),
   };
 
+  // Validate Lambda URLs (optional - auto-generated in production)
+  const lambdaUrls = {
+    PITCH_LAMBDA_URL: process.env.PITCH_LAMBDA_URL,
+    LEAD_LAMBDA_URL: process.env.LEAD_LAMBDA_URL,
+    HEALTH_LAMBDA_URL: process.env.HEALTH_LAMBDA_URL,
+  };
+
+  let lambdaUrlsValid = true;
+  for (const [name, url] of Object.entries(lambdaUrls)) {
+    if (url) {
+      try {
+        new URL(url);
+        serverEnv[name] = url;
+      } catch {
+        console.warn(`⚠️  Invalid Lambda URL for ${name}: ${url}`);
+        lambdaUrlsValid = false;
+      }
+    } else {
+      console.warn(`⚠️  Lambda URL ${name} not set (will be auto-generated in production)`);
+    }
+  }
+
   console.log('✅ Server environment variables validated');
   console.log(`   - API Endpoint: ${serverEnv.API_ENDPOINT}`);
+  if (lambdaUrlsValid && Object.values(lambdaUrls).every(Boolean)) {
+    console.log('   - Lambda URLs: All configured');
+  } else {
+    console.log('   - Lambda URLs: Auto-generated during build');
+  }
   
   return serverEnv;
 }

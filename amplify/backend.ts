@@ -19,8 +19,8 @@ const backend = defineBackend({
   healthFunction,
 });
 
-// Add function URLs for direct invocation
-backend.pitchFunction.resources.lambda.addFunctionUrl({
+// Add function URLs for direct invocation and capture them for outputs
+const pitchFunctionUrl = backend.pitchFunction.resources.lambda.addFunctionUrl({
   authType: FunctionUrlAuthType.NONE,
   cors: {
     allowCredentials: false,
@@ -31,7 +31,7 @@ backend.pitchFunction.resources.lambda.addFunctionUrl({
   },
 });
 
-backend.leadFunction.resources.lambda.addFunctionUrl({
+const leadFunctionUrl = backend.leadFunction.resources.lambda.addFunctionUrl({
   authType: FunctionUrlAuthType.NONE,
   cors: {
     allowCredentials: false,
@@ -42,7 +42,7 @@ backend.leadFunction.resources.lambda.addFunctionUrl({
   },
 });
 
-backend.healthFunction.resources.lambda.addFunctionUrl({
+const healthFunctionUrl = backend.healthFunction.resources.lambda.addFunctionUrl({
   authType: FunctionUrlAuthType.NONE,
   cors: {
     allowCredentials: false,
@@ -50,5 +50,14 @@ backend.healthFunction.resources.lambda.addFunctionUrl({
     allowedMethods: [HttpMethod.GET, HttpMethod.POST],
     allowedOrigins: ['*'],
     maxAge: Duration.seconds(300),
+  },
+});
+
+// Add outputs for the function URLs so they can be used in environment variables
+backend.addOutput({
+  custom: {
+    pitchFunctionUrl: pitchFunctionUrl.url,
+    leadFunctionUrl: leadFunctionUrl.url,
+    healthFunctionUrl: healthFunctionUrl.url,
   },
 });
