@@ -8,16 +8,16 @@ applications:
             - npm ci
         build:
           commands:
-            - export NEXT_PUBLIC_API_URL="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com/api"
-            - export NEXT_PUBLIC_SITE_URL="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com"
+            - export NEXT_PUBLIC_API_URL="https://marko.business/api"
+            - export NEXT_PUBLIC_SITE_URL="https://marko.business"
             - export NEXT_PUBLIC_STAGE="prod"
-            - export API_ENDPOINT="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com/api"
+            - export API_ENDPOINT="https://marko.business/api"
             - export STAGE="prod"
             - export TABLE_NAME="personalSiteData-prod"
             - export RATE_LIMIT_MAX="30"
             - export RATE_LIMIT_WINDOW="60"
             - export AWS_REGION="eu-south-1"
-            - export CORS_ORIGIN="https://$AWS_BRANCH.$AWS_APP_ID.amplifyapp.com"
+            - export CORS_ORIGIN="https://marko.business"
             - export NOTIFICATION_EMAIL="${NOTIFICATION_EMAIL}"
             - export PITCH_LAMBDA_URL=$(node -p "JSON.parse(require('fs').readFileSync('amplify_outputs.json', 'utf8')).custom?.pitchFunctionUrl || ''")
             - export LEAD_LAMBDA_URL=$(node -p "JSON.parse(require('fs').readFileSync('amplify_outputs.json', 'utf8')).custom?.leadFunctionUrl || ''")

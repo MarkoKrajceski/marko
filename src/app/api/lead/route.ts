@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Call the actual Lambda function
     const lambdaUrl = process.env.LEAD_LAMBDA_URL;
+    
     if (!lambdaUrl) {
       console.error('LEAD_LAMBDA_URL environment variable not set');
       const errorResponse: ErrorResponse = {

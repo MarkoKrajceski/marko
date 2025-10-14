@@ -15,8 +15,8 @@ import { getStage } from '@/lib/env';
 
 const ALLOWED_ORIGINS = {
   dev: ['http://localhost:3000', 'http://127.0.0.1:3000'],
-  staging: ['https://staging.marko.dev'],
-  prod: ['https://marko.dev', 'https://www.marko.dev'],
+  staging: ['https://staging.marko.business'],
+  prod: ['https://marko.business', 'https://www.marko.business'],
 };
 
 const RATE_LIMITED_PATHS = ['/api/pitch', '/api/lead'];
@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   const method = request.method;
   const userAgent = request.headers.get('user-agent') || '';
   const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
-  
+
   // Get current stage for environment-specific rules
   let stage: 'dev' | 'staging' | 'prod' = 'prod';
   try {
@@ -40,25 +40,25 @@ export function middleware(request: NextRequest) {
     // Fallback to prod for security
     stage = 'prod';
   }
-  
+
   // Create response
   let response = NextResponse.next();
-  
+
   // =============================================================================
   // SECURITY HEADERS
   // =============================================================================
-  
+
   // Apply security headers to all responses
   response = applySecurityHeaders(response, stage);
-  
+
   // =============================================================================
   // CSRF PROTECTION
   // =============================================================================
-  
+
   // Apply CSRF protection to API routes
   if (pathname.startsWith('/api/') && method !== 'GET') {
     const allowedOrigins = ALLOWED_ORIGINS[stage] || ALLOWED_ORIGINS.prod;
-    
+
     if (!validateOrigin(request, allowedOrigins)) {
       console.warn(`CSRF protection: Invalid origin for ${pathname}`, {
         origin: request.headers.get('origin'),
@@ -66,7 +66,7 @@ export function middleware(request: NextRequest) {
         ip,
         userAgent: userAgent.substring(0, 100),
       });
-      
+
       return new NextResponse(
         JSON.stringify({
           error: true,
@@ -84,22 +84,22 @@ export function middleware(request: NextRequest) {
       );
     }
   }
-  
+
   // =============================================================================
   // RATE LIMITING
   // =============================================================================
-  
+
   // Apply rate limiting to specific API endpoints
   if (RATE_LIMITED_PATHS.some(path => pathname.startsWith(path))) {
     const identifier = `${ip}:${pathname}`;
-    
+
     if (clientRateLimiter.isRateLimited(identifier)) {
       console.warn(`Rate limit exceeded for ${pathname}`, {
         ip,
         userAgent: userAgent.substring(0, 100),
         pathname,
       });
-      
+
       return new NextResponse(
         JSON.stringify({
           error: true,
@@ -119,11 +119,11 @@ export function middleware(request: NextRequest) {
       );
     }
   }
-  
+
   // =============================================================================
   // BOT PROTECTION
   // =============================================================================
-  
+
   // Basic bot protection for API routes
   if (pathname.startsWith('/api/') && method === 'POST') {
     // Check for suspicious user agents
@@ -135,16 +135,16 @@ export function middleware(request: NextRequest) {
       /crawler/i,
       /spider/i,
     ];
-    
+
     const isSuspicious = suspiciousPatterns.some(pattern => pattern.test(userAgent));
-    
+
     if (isSuspicious && stage === 'prod') {
       console.warn(`Suspicious user agent blocked for ${pathname}`, {
         ip,
         userAgent,
         pathname,
       });
-      
+
       return new NextResponse(
         JSON.stringify({
           error: true,
@@ -162,11 +162,11 @@ export function middleware(request: NextRequest) {
       );
     }
   }
-  
+
   // =============================================================================
   // REQUEST LOGGING
   // =============================================================================
-  
+
   // Log API requests for monitoring
   if (pathname.startsWith('/api/')) {
     console.log(JSON.stringify({
@@ -180,28 +180,28 @@ export function middleware(request: NextRequest) {
       stage,
     }));
   }
-  
+
   // =============================================================================
   // HTTPS REDIRECT
   // =============================================================================
-  
+
   // Redirect HTTP to HTTPS in production (only when behind a proxy)
   if (stage === 'prod' && request.headers.get('x-forwarded-proto') === 'http') {
     const httpsUrl = new URL(request.url);
     httpsUrl.protocol = 'https:';
-    
+
     return NextResponse.redirect(httpsUrl, 301);
   }
-  
+
   // =============================================================================
   // DEVELOPMENT MODE BYPASS
   // =============================================================================
-  
+
   // In development, bypass some security checks for easier testing
   if (stage === 'dev') {
     console.log(`[DEV] Middleware processed: ${method} ${pathname}`);
   }
-  
+
   return response;
 }
 
