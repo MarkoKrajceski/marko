@@ -15,6 +15,8 @@
     "validate:env:backend": "node scripts/validate-env.js --backend",
     "validate:env:server": "node scripts/validate-env.js --server",
     "extract:lambda-urls": "node scripts/extract-lambda-urls.js",
+    "sync:lambda-urls": "node scripts/sync-lambda-urls.js",
+    "setup:ses": "node scripts/setup-ses.js",
     "setup:monitoring": "node scripts/setup-monitoring.js",
     "setup:monitoring:dev": "node scripts/setup-monitoring.js dev",
     "setup:monitoring:staging": "node scripts/setup-monitoring.js staging",
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@aws-amplify/backend": "^1.16.1",
     "@aws-amplify/backend-cli": "^1.8.0",
+    "@aws-sdk/client-ses": "^3.0.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

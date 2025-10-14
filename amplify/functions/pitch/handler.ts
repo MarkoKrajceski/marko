@@ -90,8 +90,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   console.log('Pitch function called', JSON.stringify(event, null, 2));
   
   try {
+    // Handle both API Gateway and Lambda Function URL events
+    const httpMethod = event.httpMethod || (event.requestContext as any)?.http?.method;
+    
     // Validate HTTP method
-    if (event.httpMethod !== 'POST') {
+    if (httpMethod !== 'POST') {
       return {
         statusCode: 405,
         headers: {

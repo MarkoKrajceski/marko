@@ -39,8 +39,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   console.log('Health function called', JSON.stringify(event, null, 2));
   
   try {
+    // Handle both API Gateway and Lambda Function URL events
+    const httpMethod = event.httpMethod || (event.requestContext as any)?.http?.method;
+    
     // Support both GET and POST for health checks
-    if (!['GET', 'POST'].includes(event.httpMethod)) {
+    if (!['GET', 'POST'].includes(httpMethod)) {
       const errorHeaders = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

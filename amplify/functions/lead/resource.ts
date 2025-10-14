@@ -2,5 +2,5 @@ import { defineFunction } from '@aws-amplify/backend';
 
 export const leadFunction = defineFunction({
   name: 'leadHandler',
-  entry: './handler.ts'
+  entry: './handler.ts',
 });
