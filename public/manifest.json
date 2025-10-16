@@ -1,22 +1,30 @@
 {
-  "name": "Marko - AI • Cloud • Automation",
+  "name": "Marko - AI • Cloud • Automation Expert",
   "short_name": "Marko",
-  "description": "Full-stack developer and cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
+  "description": "Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
-  "theme_color": "#facc15",
+  "theme_color": "#0a0a0a",
   "orientation": "portrait-primary",
   "icons": [
     {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/svg+xml"
     }
   ],
   "categories": ["business", "productivity", "developer"],
-  "lang": "en-US",
-  "scope": "/",
-  "id": "marko-personal-site"
+  "lang": "en",
+  "dir": "ltr"
 }

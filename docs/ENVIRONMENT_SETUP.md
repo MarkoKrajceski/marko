@@ -21,6 +21,7 @@ These variables are exposed to the browser bundle and must use the `NEXT_PUBLIC_
 NEXT_PUBLIC_API_URL=https://api.marko.dev
 NEXT_PUBLIC_SITE_URL=https://marko.dev
 NEXT_PUBLIC_STAGE=prod
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 ### 2. Backend Variables (Lambda Functions)
