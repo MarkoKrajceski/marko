@@ -186,7 +186,7 @@ const nextConfig = {
 
   // Output configuration for Amplify
   output: 'standalone',
-  
+
   // Disable x-powered-by header
   poweredByHeader: false,
 
