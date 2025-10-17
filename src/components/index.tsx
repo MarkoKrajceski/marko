@@ -25,3 +25,5 @@ export const ParticleBackground = dynamic(() => import('./ParticleBackground'));
 export const ScrollIndicator = dynamic(() => import('./ScrollIndicator'));
 
 export const SlideNavigation = dynamic(() => import('./SlideNavigation'));
+
+export const Footer = dynamic(() => import('./Footer'));

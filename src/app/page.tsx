@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { Hero, WhatIDo, LiveDemo, Contact, ScrollIndicator, SlideNavigation } from '@/components';
+import { Hero, WhatIDo, LiveDemo, Contact, ScrollIndicator, SlideNavigation, Footer } from '@/components';
 import { ServiceCard } from '@/types';
 import { CloudIcon, AutomationIcon, AIIcon } from '@/components/Icons';
 
@@ -54,7 +54,7 @@ export default function Home() {
       // Only enable keyboard navigation on desktop
       if (window.innerWidth < 1024) return;
       
-      if (e.key === 'ArrowDown' || e.key === ' ') {
+      if (e.key === 'ArrowDown') {
         e.preventDefault();
         const currentScroll = window.scrollY;
         const viewportHeight = window.innerHeight;
@@ -106,6 +106,9 @@ export default function Home() {
       <div ref={contactRef} id="contact" className="min-h-screen lg:h-screen lg:snap-start">
         <Contact />
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

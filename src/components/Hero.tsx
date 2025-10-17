@@ -22,7 +22,7 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
 
         {/* Subhead */}
         <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in-up animation-delay-400">
-          Full-stack developer and cloud consultant. I ship fast, keep it simple, and instrument everything.
+          I am Marko Krajcheski, a full-stack developer and cloud consultant. I ship fast, keep it simple, and instrument everything.
         </p>
 
         {/* CTA Buttons */}
@@ -31,7 +31,7 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
             onClick={onDemoClick}
             className="group relative px-8 py-4 bg-accent text-background font-semibold rounded-lg transition-all duration-300 hover:bg-accent/90 hover:scale-105 hover:shadow-lg hover:shadow-accent/25 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
           >
-            <span className="relative z-10">Try the Demo</span>
+            <span className="relative z-10">Speak with Marko AI</span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent/80 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
           

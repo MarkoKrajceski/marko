@@ -1,286 +1,268 @@
-# Marko's Personal Introduction Site
+# 🚀 Marko's Personal Introduction Site
 
-A production-ready personal introduction website built with Next.js 15 and AWS Amplify, showcasing cloud automation expertise through a single-page application with live Lambda demos and clean minimalist design.
+> A production-ready personal introduction website showcasing cloud automation expertise through interactive Lambda demos and modern web technologies.
 
-## Architecture Overview
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![AWS Amplify](https://img.shields.io/badge/AWS-Amplify-orange?logo=aws)](https://aws.amazon.com/amplify/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
+**Live Demo:** [Visit Site](https://your-domain.com) | **Architecture:** Serverless | **Status:** Production Ready
+
+## 🏗️ Architecture Overview
+
+<details>
+<summary>Click to view system architecture diagram</summary>
+
+```mermaid
+graph TB
+    A[GitHub Repo] --> B[Amplify Hosting]
+    B --> C[CloudFront CDN]
+    B --> D[Next.js 15 App]
+    D --> E[API Gateway]
+    
+    E --> F[Pitch Lambda]
+    E --> G[Lead Lambda] 
+    E --> H[Health Lambda]
+    
+    F --> I[DynamoDB]
+    G --> I
+    
+    F --> J[CloudWatch]
+    G --> J
+    H --> J
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#ff9,stroke:#333,stroke-width:2px
+    style C fill:#9ff,stroke:#333,stroke-width:2px
+    style D fill:#9f9,stroke:#333,stroke-width:2px
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   GitHub Repo   │───▶│  Amplify Hosting │───▶│   CloudFront    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                │                        │
-                                ▼                        ▼
-                       ┌──────────────────┐    ┌─────────────────┐
-                       │   Next.js 15     │    │   Static Assets │
-                       │   (App Router)   │    │   (Images, CSS) │
-                       └──────────────────┘    └─────────────────┘
-                                │
-                                ▼
-                       ┌──────────────────┐
-                       │   API Gateway    │
-                       └──────────────────┘
-                                │
-                    ┌───────────┼───────────┐
-                    ▼           ▼           ▼
-            ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-            │ Pitch Lambda │ │ Lead Lambda  │ │Health Lambda │
-            │  (Node 22)   │ │  (Node 22)   │ │  (Node 22)   │
-            └──────────────┘ └──────────────┘ └──────────────┘
-                    │           │
-                    └───────────┼───────────┐
-                                ▼           ▼
-                       ┌──────────────────┐ ┌──────────────────┐
-                       │    DynamoDB      │ │   CloudWatch     │
-                       │   (Analytics)    │ │   (Logs/Metrics) │
-                       └──────────────────┘ └──────────────────┘
-```
 
-## Features
+</details>
 
-- **Single-page application** with Hero, What I Do, Live Demo, and Contact sections
-- **Live Lambda demo** that generates tailored pitches based on role and focus
-- **Contact form** with lead capture and DynamoDB storage
-- **Real-time analytics** with anonymized data collection and 7-day TTL
-- **Rate limiting** and comprehensive error handling
-- **CloudWatch monitoring** with custom metrics and structured logging
-- **Responsive design** with TailwindCSS and micro-animations
-- **SEO optimized** with proper meta tags and server-side rendering
+## ✨ Features
 
-## Tech Stack
+### 🎯 Core Functionality
+- **Interactive Single-Page App** - Hero, services, live demos, and contact sections
+- **AI-Powered Pitch Generator** - Tailored content based on role and focus area
+- **Smart Contact Form** - Lead capture with DynamoDB storage and validation
 
-- **Frontend**: Next.js 15 (App Router), TypeScript, TailwindCSS
-- **Backend**: AWS Lambda (Node.js 22.x)
-- **Database**: DynamoDB with TTL
-- **Hosting**: AWS Amplify Hosting with SSR
-- **API**: AWS API Gateway (REST)
-- **Monitoring**: CloudWatch Logs and Metrics
-- **CI/CD**: Amplify CI/CD with GitHub integration
+### 🔧 Technical Excellence  
+- **Real-time Analytics** - Anonymized data collection with 7-day TTL
+- **Rate Limiting & Security** - Comprehensive error handling and request throttling
+- **CloudWatch Monitoring** - Custom metrics and structured logging
+- **Responsive Design** - TailwindCSS with smooth micro-animations
+- **SEO Optimized** - Server-side rendering with proper meta tags
 
-## Quick Start
+## 🛠️ Tech Stack
+
+| Category | Technology | Version |
+|----------|------------|---------|
+| **Frontend** | Next.js (App Router) | 15.5.4 |
+| **Language** | TypeScript | 5.9+ |
+| **Styling** | TailwindCSS | 4.0 |
+| **Backend** | AWS Lambda | Node.js 22.x |
+| **Database** | DynamoDB | with TTL |
+| **Hosting** | AWS Amplify | with SSR |
+| **API** | AWS API Gateway | REST |
+| **Monitoring** | CloudWatch | Logs & Metrics |
+| **CI/CD** | Amplify CI/CD | GitHub Integration |
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- AWS CLI configured with appropriate permissions
-- Amplify CLI installed globally: `npm install -g @aws-amplify/cli`
-
-### Local Development Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd marko
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables (optional for local development)**
-   ```bash
-   # Optional: Copy example file if you want to customize local settings
-   cp .env.local.example .env.local
-   # The app works out-of-the-box without any environment variables!
-   ```
-
-4. **Validate environment setup (optional)**
-   ```bash
-   npm run validate:env
-   ```
-
-5. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-6. **Open in browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-### Available Scripts
-
-- `npm run dev` - Start development server with Turbopack
-- `npm run build` - Build production application
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues automatically
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
-- `npm run validate:env` - Validate all environment variables
-- `npm run validate:env:frontend` - Validate frontend environment variables
-- `npm run validate:env:backend` - Validate backend environment variables
-- `npm run setup:monitoring` - Set up CloudWatch monitoring
-
-## AWS Amplify Deployment
-
-### Initial Setup
-
-1. **Initialize Amplify project**
-   ```bash
-   amplify init
-   ```
-   
-   Configuration:
-   - Project name: `marko-personal-site`
-   - Environment name: `dev` (or `staging`/`prod`)
-   - Default editor: Your preferred editor
-   - App type: `javascript`
-   - Framework: `react`
-   - Source directory: `src`
-   - Build directory: `.next`
-   - Build command: `npm run build`
-   - Start command: `npm run start`
-
-2. **Add hosting**
-   ```bash
-   amplify add hosting
-   ```
-   
-   Choose:
-   - Hosting with Amplify Console
-   - Manual deployment (for initial setup)
-
-3. **Add API and Functions**
-   ```bash
-   amplify add api
-   ```
-   
-   Configuration:
-   - REST API
-   - API name: `personalSiteApi`
-   - Path: `/pitch`, `/lead`, `/health`
-   - Lambda functions: Create new functions for each endpoint
-
-4. **Add storage (DynamoDB)**
-   ```bash
-   amplify add storage
-   ```
-   
-   Configuration:
-   - NoSQL Database
-   - Table name: `personalSiteData`
-   - Partition key: `pk` (String)
-   - Sort key: `sk` (String)
-   - Add TTL attribute: `ttl` (Number)
-
-### Environment Variable Configuration
-
-**🚀 AUTOMATIC CONFIGURATION**: Environment variables are automatically generated during the Amplify build process! The build script detects your API Gateway URLs and generates all required variables.
-
-**You don't need to manually set these variables in the Amplify Console unless you want to override the defaults.**
-
-#### Auto-Generated Variables
-The following variables are automatically generated during build:
-
 ```bash
-# Auto-generated from branch name
-STAGE=dev|staging|prod              # Based on git branch (main=prod, staging=staging, others=dev)
+# Required
+node --version  # 18+
+npm --version   # Latest
 
-# Auto-generated from Amplify backend
-NEXT_PUBLIC_API_URL=https://...     # Detected from API Gateway configuration
-NEXT_PUBLIC_SITE_URL=https://...    # Generated from Amplify domain or custom domain
-TABLE_NAME=personalSiteData-{stage} # Auto-generated with stage suffix
-AWS_REGION=us-east-1               # Auto-detected from Amplify environment
-CORS_ORIGIN=https://...            # Matches the site URL
-
-# Auto-generated defaults (can be overridden)
-RATE_LIMIT_MAX=10|30               # 10 for dev/staging, 30 for prod
-RATE_LIMIT_WINDOW=60               # 60 seconds default
+# For AWS deployment
+aws --version   # AWS CLI configured
+npm install -g @aws-amplify/cli
 ```
 
-#### Manual Overrides (Optional)
-Only set these in the Amplify Console if you need custom values:
+### Local Development
 
 ```bash
-# Override rate limiting (optional)
-RATE_LIMIT_MAX=50                  # Custom rate limit
-RATE_LIMIT_WINDOW=120              # Custom window
+# 1. Clone and install
+git clone <repository-url>
+cd marko
+npm install
 
-# Override URLs (optional - not recommended)
-NEXT_PUBLIC_API_URL=https://custom-api.example.com
+# 2. Start development (works out-of-the-box!)
+npm run dev
+
+# 3. Open browser
+open http://localhost:3000
+```
+
+> 💡 **No environment setup required!** The app works immediately with sensible defaults.
+
+### 📜 Available Scripts
+
+<details>
+<summary>Development Scripts</summary>
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Build production application |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint issues automatically |
+| `npm run format` | Format code with Prettier |
+
+</details>
+
+<details>
+<summary>Environment & Validation</summary>
+
+| Command | Description |
+|---------|-------------|
+| `npm run validate:env` | Validate all environment variables |
+| `npm run validate:env:frontend` | Validate frontend environment variables |
+| `npm run validate:env:backend` | Validate backend environment variables |
+| `npm run setup:monitoring` | Set up CloudWatch monitoring |
+
+</details>
+
+<details>
+<summary>Testing & Performance</summary>
+
+| Command | Description |
+|---------|-------------|
+| `npm run test:e2e` | Run end-to-end tests |
+| `npm run perf:audit` | Performance audit |
+| `npm run analyze` | Bundle analysis |
+
+</details>
+
+## ☁️ AWS Amplify Deployment
+
+<details>
+<summary>Initial Setup Guide</summary>
+
+### 1. Initialize Amplify Project
+```bash
+amplify init
+```
+
+**Configuration:**
+- Project name: `marko-personal-site`
+- Environment: `dev` / `staging` / `prod`
+- Framework: `react`
+- Build directory: `.next`
+- Build command: `npm run build`
+
+### 2. Add Resources
+```bash
+# Add hosting
+amplify add hosting
+
+# Add API with Lambda functions
+amplify add api
+
+# Add DynamoDB storage
+amplify add storage
+```
+
+### 3. Deploy
+```bash
+amplify push
+```
+
+</details>
+
+### 🔧 Environment Configuration
+
+> **🚀 Zero-Config Deployment!** Environment variables are automatically generated during build. No manual setup required!
+
+<details>
+<summary>Auto-Generated Variables</summary>
+
+| Variable | Source | Example |
+|----------|--------|---------|
+| `STAGE` | Git branch | `dev` / `staging` / `prod` |
+| `NEXT_PUBLIC_API_URL` | API Gateway | `https://api.example.com` |
+| `TABLE_NAME` | DynamoDB | `personalSiteData-dev` |
+| `AWS_REGION` | Amplify env | `us-east-1` |
+| `RATE_LIMIT_MAX` | Stage-based | `10` (dev) / `30` (prod) |
+
+</details>
+
+<details>
+<summary>Manual Overrides (Optional)</summary>
+
+Only set these in Amplify Console if needed:
+
+```bash
+RATE_LIMIT_MAX=50
+RATE_LIMIT_WINDOW=120
 CORS_ORIGIN=https://custom-domain.com
 ```
 
-### Deployment Steps
+</details>
 
-1. **Deploy backend resources**
-   ```bash
-   amplify push
-   ```
+### 🚀 Deployment Process
 
-2. **Set up CI/CD with GitHub**
-   ```bash
-   amplify console
-   ```
-   
-   In the Amplify Console:
-   - Connect your GitHub repository
-   - Configure build settings (use provided `amplify.yml`)
-   - Set environment variables for your stage
-   - Enable automatic deployments on push to main branch
-
-3. **Configure custom domain (optional)**
-   ```bash
-   amplify add hosting
-   ```
-   
-   Choose Amazon CloudFront and S3, then configure your custom domain in the Amplify Console.
-
-### Stage-Specific Deployment
-
-#### Development Environment
 ```bash
-amplify env add dev
-amplify push --env dev
+# 1. Deploy backend
+amplify push
+
+# 2. Connect to GitHub (via Amplify Console)
+amplify console
+
+# 3. Enable auto-deployment on main branch
 ```
 
-#### Production Environment
+**Multi-Environment Setup:**
 ```bash
-amplify env add prod
-amplify push --env prod
+# Development
+amplify env add dev && amplify push --env dev
+
+# Production  
+amplify env add prod && amplify push --env prod
 ```
 
-Set stage-specific environment variables in the Amplify Console for each environment.
+## 🧪 Testing
 
-## Local Testing
+<details>
+<summary>Local Testing</summary>
 
-### Frontend Testing
 ```bash
-# Run development server
+# Frontend
 npm run dev
+npm run build && npm run start
 
-# Test build process
-npm run build
-npm run start
-```
-
-### Backend Testing (Lambda Functions)
-```bash
-# Test Lambda functions locally (requires Amplify CLI)
+# Backend (Lambda functions)
 amplify mock api
 
-# Test specific endpoints
+# Environment validation
+npm run validate:env
+```
+
+</details>
+
+<details>
+<summary>API Testing</summary>
+
+```bash
+# Test pitch endpoint
 curl -X POST http://localhost:20002/pitch \
   -H "Content-Type: application/json" \
   -d '{"role": "cto", "focus": "cloud"}'
 
+# Test health endpoint
 curl -X GET http://localhost:20002/health
 ```
 
-### Environment Variable Testing
-```bash
-# Validate all environment variables
-npm run validate:env
+</details>
 
-# Validate specific environments
-npm run validate:env:frontend
-npm run validate:env:backend
-```
+## 📡 API Reference
 
-## API Endpoints
-
-### POST /pitch
-Generate a tailored pitch based on role and focus.
+<details>
+<summary><code>POST /pitch</code> - Generate tailored pitch</summary>
 
 **Request:**
 ```json
@@ -300,14 +282,16 @@ Generate a tailored pitch based on role and focus.
 }
 ```
 
-### POST /lead
-Capture contact form submissions.
+</details>
+
+<details>
+<summary><code>POST /lead</code> - Capture contact form</summary>
 
 **Request:**
 ```json
 {
   "name": "John Doe",
-  "email": "john@example.com",
+  "email": "john@example.com", 
   "message": "Interested in collaboration..."
 }
 ```
@@ -320,8 +304,10 @@ Capture contact form submissions.
 }
 ```
 
-### GET /health
-System health check endpoint.
+</details>
+
+<details>
+<summary><code>GET /health</code> - System health check</summary>
 
 **Response:**
 ```json
@@ -334,84 +320,119 @@ System health check endpoint.
 }
 ```
 
-## Monitoring and Observability
+</details>
 
-### CloudWatch Metrics
-- `PitchRequests`: Count of pitch generation requests
-- `PitchLatency`: Response time for pitch generation
-- `LeadCaptures`: Count of lead form submissions
-- `ErrorRate`: Percentage of failed requests
+## 📊 Monitoring & Observability
 
-### CloudWatch Logs
-- Structured JSON logging with correlation IDs
-- Separate log groups per Lambda function
-- 30-day log retention for cost optimization
+<details>
+<summary>CloudWatch Metrics</summary>
 
-### Setting Up Monitoring
+| Metric | Description |
+|--------|-------------|
+| `PitchRequests` | Count of pitch generation requests |
+| `PitchLatency` | Response time for pitch generation |
+| `LeadCaptures` | Count of lead form submissions |
+| `ErrorRate` | Percentage of failed requests |
+
+</details>
+
+<details>
+<summary>Logging</summary>
+
+- **Structured JSON logging** with correlation IDs
+- **Separate log groups** per Lambda function  
+- **30-day retention** for cost optimization
+
 ```bash
-# Set up monitoring for development
-npm run setup:monitoring:dev
-
-# Set up monitoring for production
-npm run setup:monitoring:prod
+# Setup monitoring
+npm run setup:monitoring:dev    # Development
+npm run setup:monitoring:prod   # Production
 ```
 
-## Troubleshooting
+</details>
 
-### Common Issues
+## 🔧 Troubleshooting
 
-1. **Environment Variables Not Loading**
-   - Verify `.env.local` exists and has correct values
-   - Run `npm run validate:env` to check configuration
-   - Ensure `NEXT_PUBLIC_` prefix for client-side variables
+<details>
+<summary>Common Issues & Solutions</summary>
 
-2. **Lambda Functions Not Deploying**
-   - Check Amplify CLI version: `amplify --version`
-   - Verify AWS credentials: `aws sts get-caller-identity`
-   - Review CloudFormation stack in AWS Console
-
-3. **CORS Errors**
-   - Verify `CORS_ORIGIN` environment variable matches your domain
-   - Check API Gateway CORS configuration in AWS Console
-   - Ensure proper headers in Lambda responses
-
-4. **DynamoDB Access Issues**
-   - Verify IAM roles have proper DynamoDB permissions
-   - Check table name matches `TABLE_NAME` environment variable
-   - Review CloudWatch logs for detailed error messages
-
-### Debug Commands
+### Environment Variables Not Loading
 ```bash
-# Check Amplify status
-amplify status
-
-# View Amplify logs
-amplify console
-
-# Test API endpoints
-curl -X GET https://your-api-url/health
-
-# Check environment variables
+# Check configuration
 npm run validate:env
+
+# Verify .env.local exists
+ls -la .env.local
 ```
 
-## Contributing
+### Lambda Functions Not Deploying
+```bash
+# Check Amplify CLI version
+amplify --version
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test thoroughly
-4. Run linting and formatting: `npm run lint:fix && npm run format`
-5. Commit your changes: `git commit -m 'Add feature'`
-6. Push to the branch: `git push origin feature-name`
-7. Submit a pull request
+# Verify AWS credentials
+aws sts get-caller-identity
 
-## License
+# Review CloudFormation stack
+amplify console
+```
+
+### CORS Errors
+- Verify `CORS_ORIGIN` matches your domain
+- Check API Gateway CORS in AWS Console
+- Ensure proper headers in Lambda responses
+
+### DynamoDB Access Issues
+- Verify IAM roles have DynamoDB permissions
+- Check `TABLE_NAME` environment variable
+- Review CloudWatch logs for errors
+
+</details>
+
+<details>
+<summary>Debug Commands</summary>
+
+```bash
+amplify status              # Check Amplify status
+amplify console            # View Amplify logs
+npm run validate:env       # Check environment variables
+curl -X GET https://your-api-url/health  # Test API
+```
+
+</details>
+
+## 🤝 Contributing
+
+```bash
+# 1. Fork & clone
+git checkout -b feature-name
+
+# 2. Make changes & test
+npm run lint:fix && npm run format
+
+# 3. Commit & push
+git commit -m 'Add feature'
+git push origin feature-name
+
+# 4. Submit pull request
+```
+
+## 📄 License
 
 This project is private and proprietary.
 
-## Support
+## 💬 Support
 
-For issues and questions:
-- Check the troubleshooting section above
-- Review CloudWatch logs for detailed error information
-- Contact the development team for additional support
+- 📖 Check [troubleshooting section](#-troubleshooting)
+- 📊 Review CloudWatch logs for errors
+- 💌 Contact development team for support
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Next.js 15 and AWS Amplify**
+
+[⬆ Back to top](#-markos-personal-introduction-site)
+
+</div>

@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LiveDemoProps, DemoState, PitchRequest, PitchResponse } from '@/types';
 import { CopyIcon, CheckIcon, LoadingIcon, InfoIcon } from './Icons';
 
-export default function LiveDemo({ className = '' }: LiveDemoProps) {
+export default function MarkoAI({ className = '' }: LiveDemoProps) {
   const [state, setState] = useState<DemoState>({
     role: '',
-    focus: '',
+    query: '',
     loading: false,
     result: null,
     error: null,
@@ -15,37 +15,52 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
 
   const [copied, setCopied] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const roles = [
     { value: 'recruiter', label: 'Recruiter' },
     { value: 'cto', label: 'CTO' },
     { value: 'product', label: 'Product Manager' },
     { value: 'founder', label: 'Founder' },
+    { value: 'other', label: 'Other' },
   ] as const;
 
-  const focuses = [
-    { value: 'ai', label: 'Applied AI' },
-    { value: 'cloud', label: 'Cloud & Serverless' },
-    { value: 'automation', label: 'Automation Pipelines' },
-  ] as const;
+  const quickPrompts = [
+    "How many years of experience do you have with React?",
+    "Tell me about your experience with AI and machine learning",
+    "What cloud architectures have you worked with?",
+    "Can you help with a startup technical strategy?",
+  ];
 
   const handleRoleChange = (role: DemoState['role']) => {
-    setState(prev => ({ ...prev, role, focus: '', result: null, error: null }));
+    setState(prev => ({ ...prev, role, result: null, error: null }));
   };
 
-  const handleFocusChange = (focus: DemoState['focus']) => {
-    setState(prev => ({ ...prev, focus, result: null, error: null }));
+  const handleQueryChange = (query: string) => {
+    setState(prev => ({ ...prev, query, result: null, error: null }));
+  };
+
+  const handleQuickPrompt = (prompt: string) => {
+    setState(prev => ({ ...prev, query: prompt, result: null, error: null }));
+  };
+
+  // Format markdown text to HTML
+  const formatMarkdown = (text: string) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic text
+      .replace(/\n/g, '<br />'); // Line breaks
   };
 
   const generatePitch = async () => {
-    if (!state.role || !state.focus) return;
+    if (!state.role || !state.query.trim()) return;
 
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
       const request: PitchRequest = {
         role: state.role as PitchRequest['role'],
-        focus: state.focus as PitchRequest['focus'],
+        query: state.query.trim(),
       };
 
       const response = await fetch('/api/pitch', {
@@ -63,6 +78,7 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
 
       const result: PitchResponse = await response.json();
       setState(prev => ({ ...prev, result, loading: false }));
+      setShowModal(true); // Show modal when response is received
     } catch (error) {
       setState(prev => ({
         ...prev,
@@ -84,23 +100,40 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setCopied(false);
+  };
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showModal) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showModal]);
+
   const retry = () => {
     setState(prev => ({ ...prev, error: null }));
     generatePitch();
   };
 
-  const isFormValid = state.role && state.focus;
+  const isFormValid = state.role && state.query.trim();
 
   return (
     <section className={`min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 ${className}`}>
       <div className="max-w-4xl mx-auto w-full">
         {/* Section Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-7">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Live Demo
+            Marko AI
           </h2>
           <p className="text-lg text-muted max-w-2xl mx-auto mb-3 leading-relaxed">
-            See how I tailor my pitch based on your role and interests. This hits a real AWS Lambda function.
+            Check if I&apos;m the right person for you. Ask me anything about my experience and expertise.
           </p>
 
           {/* Tooltip */}
@@ -119,7 +152,7 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
 
             {showTooltip && (
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-3 bg-foreground text-background text-sm rounded-lg whitespace-nowrap shadow-xl border border-foreground/20">
-                This hits a real AWS Lambda and stores anonymized analytics for 7 days
+                Logs are stored in CloudWatch for analysis and monitoring
                 <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
               </div>
             )}
@@ -129,7 +162,7 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
         {/* Demo Widget */}
         <div className="bg-background border border-foreground/10 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl shadow-foreground/5">
           {/* Form */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-10">
+          <div className="space-y-6 lg:space-y-8 mb-6 lg:mb-10">
             {/* Role Selection */}
             <div className="space-y-2 lg:space-y-3">
               <label htmlFor="role-select" className="block text-sm font-semibold text-foreground">
@@ -150,33 +183,58 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
                 ))}
               </select>
               <p id="role-help" className="text-sm text-muted leading-relaxed">
-                This helps tailor the pitch to your perspective
+                This helps tailor the response to your perspective
               </p>
             </div>
 
-            {/* Focus Selection */}
+            {/* Query Input */}
             <div className="space-y-2 lg:space-y-3">
-              <label htmlFor="focus-select" className="block text-sm font-semibold text-foreground">
-                Area of Interest
+              <label htmlFor="query-input" className="block text-sm font-semibold text-foreground">
+                Your Question
               </label>
-              <select
-                id="focus-select"
-                value={state.focus}
-                onChange={(e) => handleFocusChange(e.target.value as DemoState['focus'])}
-                disabled={!state.role}
-                className="w-full px-4 lg:px-6 py-3 lg:py-4 bg-background border border-foreground/20 rounded-xl text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all duration-200 hover:border-foreground/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-foreground/20"
-                aria-describedby="focus-help"
-              >
-                <option value="">Select focus area...</option>
-                {focuses.map((focus) => (
-                  <option key={focus.value} value={focus.value}>
-                    {focus.label}
-                  </option>
+              <textarea
+                id="query-input"
+                value={state.query}
+                onChange={(e) => handleQueryChange(e.target.value)}
+                placeholder="Describe your project, position, case, or area of interest..."
+                rows={4}
+                className="w-full px-4 lg:px-6 py-3 lg:py-4 bg-background border border-foreground/20 rounded-xl text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all duration-200 hover:border-foreground/30 resize-none"
+                aria-describedby="query-help query-counter"
+              />
+              <div className="flex items-center justify-between">
+                <p id="query-help" className="text-sm text-muted leading-relaxed">
+                  Ask me anything about my experience and expertise
+                </p>
+                <span
+                  id="query-counter"
+                  className={`text-sm transition-colors duration-200 ${state.query.length > 999
+                    ? 'text-red-400'
+                    : state.query.length > 800
+                      ? 'text-yellow-400'
+                      : 'text-muted'
+                    }`}
+                >
+                  {state.query.length}/1000
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Prompts */}
+            <div className="space-y-2 lg:space-y-3">
+              <label className="block text-sm font-semibold text-foreground">
+                Quick Prompts
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {quickPrompts.map((prompt, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuickPrompt(prompt)}
+                    className="text-left px-3 py-2 text-sm text-muted hover:text-accent hover:bg-accent/5 rounded-lg transition-all duration-200 border border-transparent hover:border-accent/20"
+                  >
+                    &ldquo;{prompt}&rdquo;
+                  </button>
                 ))}
-              </select>
-              <p id="focus-help" className="text-sm text-muted leading-relaxed">
-                What aspect of my work interests you most?
-              </p>
+              </div>
             </div>
           </div>
 
@@ -191,51 +249,18 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
               {state.loading ? (
                 <>
                   <LoadingIcon className="w-4 lg:w-5 h-4 lg:h-5" />
-                  Generating...
+                  Thinking...
                 </>
               ) : (
-                'Generate Pitch'
+                'Ask Marko AI'
               )}
             </button>
             <p id="generate-help" className="mt-2 text-sm text-muted">
-              Calls a real Lambda function on AWS
+              Powered by AWS Bedrock & Lambda
             </p>
           </div>
 
-          {/* Results */}
-          {state.result && (
-            <div className="bg-accent/5 border border-accent/20 rounded-xl p-8 animate-fade-in">
-              <div className="flex items-start justify-between mb-6">
-                <h3 className="text-xl font-semibold text-foreground">Generated Pitch</h3>
-                <button
-                  onClick={copyToClipboard}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent/20 rounded-lg hover:bg-accent/10"
-                  aria-label="Copy pitch to clipboard"
-                >
-                  {copied ? (
-                    <>
-                      <CheckIcon className="w-4 h-4" />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <CopyIcon className="w-4 h-4" />
-                      Copy
-                    </>
-                  )}
-                </button>
-              </div>
 
-              <p className="text-foreground leading-relaxed text-lg mb-6">
-                {state.result.pitch}
-              </p>
-
-              <div className="flex items-center justify-between text-sm text-muted pt-4 border-t border-accent/10">
-                <span>Confidence: {Math.round(state.result.confidence * 100)}%</span>
-                <span>Generated: {new Date(state.result.timestamp).toLocaleTimeString()}</span>
-              </div>
-            </div>
-          )}
 
           {/* Error State */}
           {state.error && (
@@ -254,6 +279,59 @@ export default function LiveDemo({ className = '' }: LiveDemoProps) {
           )}
         </div>
       </div>
+
+      {/* Response Modal */}
+      {showModal && state.result && (
+        <div
+          className="fixed inset-0 bg-accent/5 animate-fade-in flex items-center justify-center p-4 z-50"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-background border border-foreground/10 rounded-2xl p-6 sm:p-8 max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between mb-6">
+              <h3 className="text-2xl font-semibold text-foreground">Marko&apos;s Response</h3>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={copyToClipboard}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent/20 rounded-lg hover:bg-accent/10"
+                  aria-label="Copy response to clipboard"
+                >
+                  {copied ? (
+                    <>
+                      <CheckIcon className="w-4 h-4" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <CopyIcon className="w-4 h-4" />
+                      Copy
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="inline-flex items-center justify-center w-8 h-8 text-muted hover:text-foreground transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent/20 rounded-lg hover:bg-foreground/10"
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            <div
+              className="text-foreground leading-relaxed text-lg mb-6 prose prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: formatMarkdown(state.result.pitch) }}
+            />
+
+            <div className="flex items-center justify-between text-sm text-muted pt-4 border-t border-accent/10">
+              <span>Confidence: {Math.round(state.result.confidence * 100)}%</span>
+              <span>Generated: {new Date(state.result.timestamp).toLocaleTimeString()}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

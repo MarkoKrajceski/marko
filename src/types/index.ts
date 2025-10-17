@@ -3,8 +3,8 @@
 // =============================================================================
 
 export interface PitchRequest {
-  role: 'recruiter' | 'cto' | 'product' | 'founder';
-  focus: 'ai' | 'cloud' | 'automation';
+  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other';
+  query: string;
 }
 
 export interface PitchResponse {
@@ -77,8 +77,8 @@ export interface WhatIDoProps {
 }
 
 export interface DemoState {
-  role: 'recruiter' | 'cto' | 'product' | 'founder' | '';
-  focus: 'ai' | 'cloud' | 'automation' | '';
+  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other' | '';
+  query: string;
   loading: boolean;
   result: PitchResponse | null;
   error: string | null;
@@ -119,8 +119,8 @@ export interface BaseDynamoDBItem {
 export interface PitchAnalyticsItem extends BaseDynamoDBItem {
   pk: `pitch#${string}`; // pitch#${requestId}
   sk: `time#${string}`;  // time#${isoTimestamp}
-  role: 'recruiter' | 'cto' | 'product' | 'founder';
-  focus: 'ai' | 'cloud' | 'automation';
+  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other';
+  query: string;
   ipHash: string;
   userAgentHash: string;
   confidence: number;
@@ -153,14 +153,11 @@ export enum UserRole {
   RECRUITER = 'recruiter',
   CTO = 'cto',
   PRODUCT = 'product',
-  FOUNDER = 'founder'
+  FOUNDER = 'founder',
+  OTHER = 'other'
 }
 
-export enum FocusArea {
-  AI = 'ai',
-  CLOUD = 'cloud',
-  AUTOMATION = 'automation'
-}
+
 
 export enum HttpStatus {
   OK = 200,
@@ -241,7 +238,7 @@ export interface ContactFormValidation extends FormValidation {
 export interface PitchFormValidation extends FormValidation {
   errors: {
     role?: string;
-    focus?: string;
+    query?: string;
   };
 }
 
@@ -261,7 +258,7 @@ export interface RequestMetrics {
 
 export interface PitchMetrics extends RequestMetrics {
   role: UserRole;
-  focus: FocusArea;
+  query: string;
   confidence: number;
 }
 
@@ -291,9 +288,7 @@ export const isValidRole = (role: string): role is UserRole => {
   return Object.values(UserRole).includes(role as UserRole);
 };
 
-export const isValidFocus = (focus: string): focus is FocusArea => {
-  return Object.values(FocusArea).includes(focus as FocusArea);
-};
+
 
 export const isErrorResponse = (response: unknown): response is ErrorResponse => {
   return !!(response && typeof response === 'object' && response !== null && 'error' in response && (response as ErrorResponse).error === true);

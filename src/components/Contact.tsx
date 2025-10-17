@@ -24,19 +24,19 @@ export default function Contact({ className = '' }: ContactProps) {
         if (!value.trim()) return 'Name is required';
         if (value.trim().length < 2) return 'Name must be at least 2 characters';
         return '';
-      
+
       case 'email':
         if (!value.trim()) return 'Email is required';
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) return 'Please enter a valid email address';
         return '';
-      
+
       case 'message':
         if (!value.trim()) return 'Message is required';
         if (value.trim().length < 10) return 'Message must be at least 10 characters';
         if (value.trim().length > 1000) return 'Message must be less than 1000 characters';
         return '';
-      
+
       default:
         return '';
     }
@@ -104,7 +104,7 @@ export default function Contact({ className = '' }: ContactProps) {
       }
 
       const result: LeadResponse = await response.json();
-      
+
       if (result.ok) {
         setState(prev => ({
           ...prev,
@@ -143,15 +143,15 @@ export default function Contact({ className = '' }: ContactProps) {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-6">
               <CheckIcon className="w-8 h-8 text-green-400" />
             </div>
-            
+
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Message Sent Successfully!
             </h2>
-            
+
             <p className="text-muted mb-6">
               Thanks for reaching out! I&apos;ll get back to you within 24 hours.
             </p>
-            
+
             <button
               onClick={resetForm}
               className="px-6 py-3 bg-accent text-background font-semibold rounded-lg hover:bg-accent/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
@@ -190,11 +190,10 @@ export default function Contact({ className = '' }: ContactProps) {
                 id="name"
                 value={state.form.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${
-                  fieldErrors.name
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.name
                     ? 'border-red-500 focus:border-red-500'
                     : 'border-foreground/20 focus:border-accent'
-                }`}
+                  }`}
                 placeholder="Your full name"
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
                 aria-invalid={!!fieldErrors.name}
@@ -216,11 +215,10 @@ export default function Contact({ className = '' }: ContactProps) {
                 id="email"
                 value={state.form.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${
-                  fieldErrors.email
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.email
                     ? 'border-red-500 focus:border-red-500'
                     : 'border-foreground/20 focus:border-accent'
-                }`}
+                  }`}
                 placeholder="your.email@example.com"
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                 aria-invalid={!!fieldErrors.email}
@@ -242,11 +240,10 @@ export default function Contact({ className = '' }: ContactProps) {
                 rows={4}
                 value={state.form.message}
                 onChange={(e) => handleInputChange('message', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 resize-vertical ${
-                  fieldErrors.message
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 resize-vertical ${fieldErrors.message
                     ? 'border-red-500 focus:border-red-500'
                     : 'border-foreground/20 focus:border-accent'
-                }`}
+                  }`}
                 placeholder="Tell me about your project, timeline, and how I can help..."
                 aria-describedby={fieldErrors.message ? 'message-error' : 'message-help'}
                 aria-invalid={!!fieldErrors.message}
@@ -265,7 +262,7 @@ export default function Contact({ className = '' }: ContactProps) {
             {/* Privacy Notice */}
             <div className="mb-4 lg:mb-6 p-3 lg:p-4 bg-foreground/5 border border-foreground/10 rounded-lg">
               <p className="text-xs lg:text-sm text-muted">
-                <strong>Privacy Notice:</strong> Your info is used only to get back to you. 
+                <strong>Privacy Notice:</strong> Your info is used only to get back to you.
                 I don&apos;t share, sell, or spam. Data is stored securely and deleted after 30 days.
               </p>
             </div>

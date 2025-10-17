@@ -20,7 +20,7 @@ export function generateSEO(config: SEOConfig): Metadata {
       'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions', 
       'DevOps', 'CI/CD pipelines', 'infrastructure as code', 'cloud migration'
     ],
-    image = '/og-image.jpg',
+    image = '/og-image.png',
     url = '/',
     type = 'website'
   } = config;
@@ -104,7 +104,7 @@ export function generatePersonSchema() {
     "jobTitle": "Full-Stack Developer & Cloud Consultant",
     "description": "Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
     "url": baseUrl,
-    "image": `${baseUrl}/og-image.jpg`,
+    "image": `${baseUrl}/og-image.png`,
     "sameAs": [
       // Add your social media profiles here
       // "https://linkedin.com/in/marko",

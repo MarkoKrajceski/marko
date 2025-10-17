@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: 'Marko - Cloud & AI Solutions',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Marko - AI, Cloud & Automation Expert - Serverless Architecture and Applied AI Solutions',
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Marko - AI • Cloud • Automation Expert',
     description: 'Expert AWS cloud consultant & full-stack developer. Specializing in serverless architecture, automation pipelines, and applied AI solutions.',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.png'],
     creator: '@marko', // Update with actual Twitter handle if available
     site: '@marko',
   },

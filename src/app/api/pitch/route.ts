@@ -7,19 +7,18 @@ export async function POST(request: NextRequest) {
     const body: PitchRequest = await request.json();
 
     // Validate input
-    if (!body.role || !body.focus) {
+    if (!body.role || !body.query) {
       const errorResponse: ErrorResponse = {
         error: true,
-        message: 'Role and focus are required',
+        message: 'Role and query are required',
         code: 'VALIDATION_ERROR',
         timestamp: new Date().toISOString(),
       };
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    // Validate role and focus values
-    const validRoles = ['recruiter', 'cto', 'product', 'founder'];
-    const validFocuses = ['ai', 'cloud', 'automation'];
+    // Validate role and query values
+    const validRoles = ['recruiter', 'cto', 'product', 'founder', 'other'];
 
     if (!validRoles.includes(body.role)) {
       const errorResponse: ErrorResponse = {
@@ -31,10 +30,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    if (!validFocuses.includes(body.focus)) {
+    if (typeof body.query !== 'string' || body.query.trim().length === 0) {
       const errorResponse: ErrorResponse = {
         error: true,
-        message: `Invalid focus. Must be one of: ${validFocuses.join(', ')}`,
+        message: 'Query must be a non-empty string',
+        code: 'VALIDATION_ERROR',
+        timestamp: new Date().toISOString(),
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
+    }
+
+    if (body.query.trim().length > 1000) {
+      const errorResponse: ErrorResponse = {
+        error: true,
+        message: 'Query must be less than 1000 characters',
         code: 'VALIDATION_ERROR',
         timestamp: new Date().toISOString(),
       };

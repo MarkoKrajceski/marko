@@ -3,9 +3,16 @@
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+interface GtagConfig {
+  page_title?: string;
+  page_location?: string;
+  [key: string]: unknown;
+}
+
 declare global {
   interface Window {
-    gtag: (command: string, targetId: string, config?: any) => void;
+    gtag: (command: string, targetId: string, config?: GtagConfig) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -16,9 +23,9 @@ export default function Analytics() {
     if (!GA_MEASUREMENT_ID) return;
 
     // Initialize gtag
-    window.gtag = window.gtag || function() {
-      (window.gtag as any).q = (window.gtag as any).q || [];
-      (window.gtag as any).q.push(arguments);
+    window.gtag = window.gtag || function(...args: unknown[]) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(args);
     };
 
     // Configure Google Analytics
