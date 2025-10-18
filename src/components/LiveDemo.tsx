@@ -136,27 +136,7 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
             Check if I&apos;m the right person for you. Ask me anything about my experience and expertise.
           </p>
 
-          {/* Tooltip */}
-          <div className="relative inline-block">
-            <button
-              onMouseEnter={() => setShowTooltip(true)}
-              onMouseLeave={() => setShowTooltip(false)}
-              onFocus={() => setShowTooltip(true)}
-              onBlur={() => setShowTooltip(false)}
-              className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-foreground/5"
-              aria-label="Information about data retention"
-            >
-              <InfoIcon className="w-4 h-4" />
-              Data retention info
-            </button>
 
-            {showTooltip && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-3 bg-foreground text-background text-sm rounded-lg whitespace-nowrap shadow-xl border border-foreground/20">
-                Logs are stored in CloudWatch for analysis and monitoring
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Demo Widget */}
@@ -255,9 +235,29 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
                 'Ask Marko AI'
               )}
             </button>
-            <p id="generate-help" className="mt-2 text-sm text-muted">
-              Powered by AWS Bedrock & Lambda
-            </p>
+
+            <div className="mt-2 text-center">
+              <div className="inline-flex items-center gap-2 text-sm text-muted relative">
+                <span>Powered by AWS Bedrock & Lambda</span>
+                <button
+                  onMouseEnter={() => setShowTooltip(true)}
+                  onMouseLeave={() => setShowTooltip(false)}
+                  onFocus={() => setShowTooltip(true)}
+                  onBlur={() => setShowTooltip(false)}
+                  className="inline-flex items-center text-muted hover:text-accent transition-colors duration-200"
+                  aria-label="Information about data retention"
+                >
+                  <InfoIcon className="w-4 h-4" />
+                </button>
+
+                {showTooltip && (
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-3 bg-foreground text-background text-sm rounded-lg whitespace-nowrap shadow-xl border border-foreground/20 z-10">
+                    Logs are stored in CloudWatch for analysis and monitoring
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
 
