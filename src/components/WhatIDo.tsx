@@ -4,11 +4,11 @@ import { WhatIDoProps } from '@/types';
 
 export default function WhatIDo({ services }: WhatIDoProps) {
   return (
-    <section className="min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-0">
+    <section className="min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-0" aria-labelledby="services-heading">
       <div className="max-w-6xl mx-auto w-full">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+          <h2 id="services-heading" className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
             What I Do
           </h2>
           <p className="text-lg text-muted max-w-2xl mx-auto">

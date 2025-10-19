@@ -5,7 +5,7 @@ import ParticleBackground from './ParticleBackground';
 
 export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
   return (
-    <section className="relative min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-8 lg:py-0">
+    <section className="relative min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-8 lg:py-0" aria-labelledby="hero-heading">
       <div className="max-w-4xl mx-auto text-center relative z-10">
         {/* Tagline */}
         <div className="mb-8 animate-fade-in">
@@ -15,7 +15,7 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in-up animation-delay-200">
+        <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in-up animation-delay-200">
           <span className="block text-foreground">I automate the boring</span>
           <span className="block text-accent">and scale the bold</span>
         </h1>
@@ -30,6 +30,7 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
           <button
             onClick={onDemoClick}
             className="group relative px-8 py-4 bg-accent text-background font-semibold rounded-lg transition-all duration-300 hover:bg-accent/90 hover:scale-105 hover:shadow-lg hover:shadow-accent/25 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
+            aria-label="Try the interactive Marko AI demo"
           >
             <span className="relative z-10">Speak with Marko AI</span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent/80 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -38,16 +39,17 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
           <button
             onClick={onContactClick}
             className="group px-8 py-4 border-2 border-foreground/20 text-foreground font-semibold rounded-lg transition-all duration-300 hover:border-accent hover:text-accent hover:scale-105 hover:shadow-lg hover:shadow-foreground/10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
+            aria-label="Navigate to contact form"
           >
             <span className="relative z-10">Get in Touch</span>
           </button>
         </div>
 
         {/* Scroll Hint - Only show on desktop */}
-        <div className="animate-fade-in-up animation-delay-800 hidden lg:block">
+        <div className="animate-fade-in-up animation-delay-800 hidden lg:block" aria-label="Scroll indicator">
           <div className="flex flex-col items-center text-muted">
             <p className="text-sm mb-2">Scroll or use ↓ ↑ keys to navigate</p>
-            <div className="w-6 h-10 border-2 border-muted/30 rounded-full flex justify-center">
+            <div className="w-6 h-10 border-2 border-muted/30 rounded-full flex justify-center" role="img" aria-label="Scroll down indicator">
               <div className="w-1 h-3 bg-muted/50 rounded-full mt-2 animate-bounce"></div>
             </div>
           </div>

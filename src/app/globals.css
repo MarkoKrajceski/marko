@@ -2,10 +2,10 @@
 
 :root {
   --background: #0a0a0a;
-  --foreground: #fff;
+  --foreground: #ffffff;
   --accent: #facc15;
   --secondary: #f7dce6;
-  --muted: #d4d4d8;
+  --muted: #e4e4e7;
 }
 
 @theme inline {
@@ -292,6 +292,30 @@ body {
 .focus-ring:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
+}
+
+/* Skip link styles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
 }
 
 /* Smooth transitions for all interactive elements */

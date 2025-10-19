@@ -87,25 +87,27 @@ export default function Home() {
       {/* Slide Navigation */}
       <SlideNavigation onSlideChange={handleSlideChange} />
 
-      {/* Hero Section - Slide 1 */}
-      <div ref={heroRef} className="min-h-screen lg:h-screen lg:snap-start">
-        <Hero onDemoClick={scrollToDemo} onContactClick={scrollToContact} />
-      </div>
+      <main id="main-content">
+        {/* Hero Section - Slide 1 */}
+        <div ref={heroRef} className="min-h-screen lg:h-screen lg:snap-start">
+          <Hero onDemoClick={scrollToDemo} onContactClick={scrollToContact} />
+        </div>
 
-      {/* What I Do Section - Slide 2 */}
-      <div ref={whatIDoRef} className="min-h-screen lg:h-screen lg:snap-start">
-        <WhatIDo services={services} />
-      </div>
+        {/* What I Do Section - Slide 2 */}
+        <div ref={whatIDoRef} className="min-h-screen lg:h-screen lg:snap-start">
+          <WhatIDo services={services} />
+        </div>
 
-      {/* Live Demo Section - Slide 3 */}
-      <div ref={demoRef} id="demo" className="min-h-screen lg:h-screen lg:snap-start">
-        <LiveDemo />
-      </div>
+        {/* Live Demo Section - Slide 3 */}
+        <div ref={demoRef} id="demo" className="min-h-screen lg:h-screen lg:snap-start">
+          <LiveDemo />
+        </div>
 
-      {/* Contact Section - Slide 4 */}
-      <div ref={contactRef} id="contact" className="min-h-screen lg:h-screen lg:snap-start">
-        <Contact />
-      </div>
+        {/* Contact Section - Slide 4 */}
+        <div ref={contactRef} id="contact" className="min-h-screen lg:h-screen lg:snap-start">
+          <Contact />
+        </div>
+      </main>
 
       {/* Footer */}
       <Footer />

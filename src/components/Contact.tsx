@@ -165,11 +165,11 @@ export default function Contact({ className = '' }: ContactProps) {
   }
 
   return (
-    <section className={`min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 ${className}`}>
+    <section className={`min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 ${className}`} aria-labelledby="contact-heading">
       <div className="max-w-2xl mx-auto w-full">
         {/* Section Header */}
         <div className="text-center mb-6 lg:mb-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+          <h2 id="contact-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
             Get in Touch
           </h2>
           <p className="text-base lg:text-lg text-muted">

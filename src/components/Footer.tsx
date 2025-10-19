@@ -12,8 +12,9 @@ export default function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors duration-200 cursor-pointer"
+                        aria-label="View source code on GitHub - Made with love, coffee, and Kiro"
                     >
-                        Made with ❤️ and lots of ☕, and Kiro <KiroIcon className="w-4 h-5" />
+                        Made with love❤️, coffee☕, and Kiro <KiroIcon className="w-4 h-5" />
                     </a>
                 </div>
             </div>

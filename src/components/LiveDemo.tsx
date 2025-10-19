@@ -125,18 +125,16 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
   const isFormValid = state.role && state.query.trim();
 
   return (
-    <section className={`min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 ${className}`}>
+    <section className={`min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 ${className}`} aria-labelledby="demo-heading">
       <div className="max-w-4xl mx-auto w-full">
         {/* Section Header */}
         <div className="text-center mb-7">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h2 id="demo-heading" className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Marko AI
           </h2>
           <p className="text-lg text-muted max-w-2xl mx-auto mb-3 leading-relaxed">
             Check if I&apos;m the right person for you. Ask me anything about my experience and expertise.
           </p>
-
-
         </div>
 
         {/* Demo Widget */}
@@ -210,6 +208,7 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
                     key={index}
                     onClick={() => handleQuickPrompt(prompt)}
                     className="text-left px-3 py-2 text-sm text-muted hover:text-accent hover:bg-accent/5 rounded-lg transition-all duration-200 border border-transparent hover:border-accent/20"
+                    aria-label={`Use quick prompt: ${prompt}`}
                   >
                     &ldquo;{prompt}&rdquo;
                   </button>
@@ -225,6 +224,7 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
               disabled={!isFormValid || state.loading}
               className="inline-flex items-center gap-3 px-8 lg:px-10 py-3 lg:py-4 bg-accent text-background font-semibold rounded-xl transition-all duration-300 hover:bg-accent/90 hover:scale-105 hover:shadow-lg hover:shadow-accent/25 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none text-base lg:text-lg"
               aria-describedby="generate-help"
+              type="button"
             >
               {state.loading ? (
                 <>
@@ -285,13 +285,16 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
         <div
           className="fixed inset-0 bg-accent/5 animate-fade-in flex items-center justify-center p-4 z-50"
           onClick={closeModal}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
         >
           <div
             className="bg-background border border-foreground/10 rounded-2xl p-6 sm:p-8 max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-6">
-              <h3 className="text-2xl font-semibold text-foreground">Marko&apos;s Response</h3>
+              <h3 id="modal-title" className="text-2xl font-semibold text-foreground">Marko&apos;s Response</h3>
               <div className="flex items-center gap-2">
                 <button
                   onClick={copyToClipboard}
@@ -323,6 +326,8 @@ export default function MarkoAI({ className = '' }: LiveDemoProps) {
             <div
               className="text-foreground leading-relaxed text-lg mb-6 prose prose-invert max-w-none"
               dangerouslySetInnerHTML={{ __html: formatMarkdown(state.result.pitch) }}
+              role="region"
+              aria-label="AI response content"
             />
 
             <div className="flex items-center justify-between text-sm text-muted pt-4 border-t border-accent/10">
