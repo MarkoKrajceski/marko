@@ -17,6 +17,14 @@ export const Contact = dynamic(() => import('./Contact'), {
   loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,
 });
 
+export const OfferCard = dynamic(() => import('./OfferCard'), {
+  loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,
+});
+
+export const OffersSection = dynamic(() => import('./OffersSection'), {
+  loading: () => <div className="animate-pulse bg-zinc-800 h-screen rounded-lg" />,
+});
+
 // Client-side only components
 export const CustomCursor = dynamic(() => import('./CustomCursor'));
 

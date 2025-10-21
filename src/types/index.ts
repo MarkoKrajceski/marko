@@ -64,6 +64,7 @@ export interface ApiError extends Error {
 export interface HeroProps {
   onDemoClick: () => void;
   onContactClick: () => void;
+  onOffersClick: () => void;
 }
 
 export interface ServiceCard {
@@ -103,6 +104,46 @@ export interface ContactState {
 
 export interface ContactProps {
   className?: string;
+}
+
+// =============================================================================
+// OFFERS SECTION TYPES
+// =============================================================================
+
+export type Cadence = 'one_time' | 'monthly' | 'annual';
+export type PriceType = 'fixed' | 'starting_at' | 'range';
+export type Currency = 'EUR' | 'USD' | 'MKD';
+
+export interface OfferTier {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: Currency;
+  cadence: Cadence;
+  priceType?: PriceType;
+  features: string[];
+  inheritsFrom?: string;
+  highlighted?: boolean;
+  badge?: string;
+  deliverables?: string[];
+  timelineWeeks?: number;
+  supportSLA?: string;
+  cta?: { label: string; href: string };
+  notes?: string[];
+  demoUrl?: string;
+}
+
+export interface OffersSectionProps {
+  className?: string;
+  onGetStartedClick: () => void;
+}
+
+export interface OfferCardProps {
+  tier: OfferTier;
+  onGetStartedClick: () => void;
+  onCardClick: () => void;
+  index: number; // for staggered animations
 }
 
 // =============================================================================
@@ -365,3 +406,92 @@ export class ApiClient {
     });
   }
 }
+
+// =============================================================================
+// OFFERS DATA AND CONSTANTS
+// =============================================================================
+
+export const FEATURE_CATALOG = {
+  'nextjs15': 'Next.js 15 (App Router)',
+  'tailwind': 'Tailwind CSS styling',
+  'responsive': 'Fully responsive design',
+  'seo': 'On-page SEO (meta, OG, sitemap)',
+  'contact-form': 'Contact form + validation + spam filter',
+  'security-headers': 'Security headers (CSP, HSTS)',
+  'uptime': 'Uptime & health checks (status page)',
+  'auth-basic': 'Authentication (email/password; OAuth optional)',
+  'mdx': 'MDX content management',
+  'blog': 'Blog (categories, tags, RSS)',
+  'analytics': 'Analytics (Plausible/GA4)',
+  'routing-advanced': 'ISR/Edge routing',
+  'dashboard-ui': 'Dashboard UI components',
+  'sanity': 'Sanity CMS integration',
+  'ai': 'AI integration (Bedrock/OpenAI)',
+  'logging': 'Structured logging & error tracking',
+  'admin': 'Admin dashboard',
+  'security-enterprise': 'Hardened security & audit',
+  'rate-limit': 'Rate limiting & middleware',
+  'feature-flags': 'Feature flags system',
+  'database': 'Database integration (Postgres/DynamoDB)'
+} as const;
+
+export const offers: OfferTier[] = [
+  {
+    id: 'starter',
+    name: 'Starter',
+    price: 250,
+    currency: 'EUR',
+    cadence: 'one_time',
+    priceType: 'starting_at',
+    description: 'Perfect for small businesses and startups',
+    features: [
+      'nextjs15', 'tailwind', 'responsive', 'seo',
+      'contact-form', 'security-headers', 'uptime'
+    ],
+    deliverables: ['1 landing page + 1 inner page', 'Sitemap & OG tags', 'Status page'],
+    timelineWeeks: 1,
+    supportSLA: 'Email support (48h SLA)',
+    cta: { label: 'Get Started', href: '#contact' },
+    demoUrl: 'https://starter.marko.business'
+  },
+  {
+    id: 'standard',
+    name: 'Standard',
+    price: 700,
+    currency: 'EUR',
+    cadence: 'one_time',
+    priceType: 'starting_at',
+    description: 'Ideal for growing businesses with content needs',
+    inheritsFrom: 'starter',
+    features: [
+      'auth-basic', 'mdx', 'blog', 'analytics',
+      'routing-advanced', 'dashboard-ui', 'sanity'
+    ],
+    deliverables: ['Blog setup', 'MDX content pipeline', 'Auth system'],
+    timelineWeeks: 2,
+    supportSLA: 'Email support (24h SLA)',
+    highlighted: true,
+    badge: 'Most Popular',
+    cta: { label: 'Get Started', href: '#contact' },
+    demoUrl: 'https://standard.marko.business'
+  },
+  {
+    id: 'advanced',
+    name: 'Advanced',
+    price: 1400,
+    currency: 'EUR',
+    cadence: 'one_time',
+    priceType: 'starting_at',
+    description: 'Enterprise-ready with AI and advanced features',
+    inheritsFrom: 'standard',
+    features: [
+      'ai', 'logging', 'admin', 'security-enterprise',
+      'rate-limit', 'feature-flags', 'database'
+    ],
+    deliverables: ['Admin portal', 'Feature flags setup', 'Observability dashboard'],
+    timelineWeeks: 3,
+    supportSLA: 'Chat support (8h SLA)',
+    cta: { label: 'Get Started', href: '#contact' },
+    demoUrl: 'https://advanced.marko.business'
+  }
+];
