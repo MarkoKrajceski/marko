@@ -13,10 +13,10 @@ export function generateSEO(config: SEOConfig): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marko.business';
   
   const {
-    title = 'Marko - AI • Cloud • Automation Expert',
-    description = 'Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
+    title = 'Marko Krajcheski - AI • Cloud • Automation Expert',
+    description = 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
     keywords = [
-      'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
+      'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
       'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions', 
       'DevOps', 'CI/CD pipelines', 'infrastructure as code', 'cloud migration'
     ],
@@ -77,8 +77,8 @@ export function generateSEO(config: SEOConfig): Metadata {
 // Predefined SEO configs for common pages
 export const seoConfigs = {
   home: {
-    title: 'Marko - AI • Cloud • Automation Expert',
-    description: 'Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
+    title: 'Marko Krajcheski - AI • Cloud • Automation Expert',
+    description: 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
     url: '/',
   },
   demo: {
@@ -100,9 +100,10 @@ export function generatePersonSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Marko",
+    "name": "Marko Krajcheski",
+    "alternateName": "Marko Business",
     "jobTitle": "Full-Stack Developer & Cloud Consultant",
-    "description": "Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
+    "description": "Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions.",
     "url": baseUrl,
     "image": `${baseUrl}/og-image.png`,
     "sameAs": [

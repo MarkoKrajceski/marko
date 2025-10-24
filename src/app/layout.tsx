@@ -18,12 +18,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Marko - AI • Cloud • Automation Expert',
-    template: '%s | Marko - AI • Cloud • Automation'
+    default: 'Marko Krajcheski - AI • Cloud • Automation Expert',
+    template: '%s | Marko Krajcheski - AI • Cloud • Automation'
   },
-  description: 'Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold with cutting-edge technology.',
+  description: 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold with cutting-edge technology.',
   keywords: [
-    'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
+    'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
     'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions', 
     'DevOps', 'CI/CD pipelines', 'infrastructure as code', 'cloud migration',
     'serverless applications', 'API development', 'microservices', 'cloud optimization'
@@ -55,8 +55,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    title: 'Marko - AI • Cloud • Automation Expert',
-    description: 'Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
+    title: 'Marko Krajcheski - AI • Cloud • Automation Expert',
+    description: 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
     siteName: 'Marko - Cloud & AI Solutions',
     images: [
       {
@@ -69,8 +69,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Marko - AI • Cloud • Automation Expert',
-    description: 'Expert AWS cloud consultant & full-stack developer. Specializing in serverless architecture, automation pipelines, and applied AI solutions.',
+    title: 'Marko Krajcheski - AI • Cloud • Automation Expert',
+    description: 'Marko Krajcheski - Expert AWS cloud consultant & full-stack developer. Specializing in serverless architecture, automation pipelines, and applied AI solutions.',
     images: ['/og-image.png'],
     creator: '@marko', // Update with actual Twitter handle if available
     site: '@marko',
@@ -87,10 +87,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add verification codes when available
-    // google: 'google-verification-code',
-    // yandex: 'yandex-verification-code',
-    // yahoo: 'yahoo-verification-code',
+    google: '1udozNQriyoOwqjERHMKz1rLhB-oU44WvSFhlwjCmBc',
   },
 };
 
