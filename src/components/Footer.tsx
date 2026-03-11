@@ -1,7 +1,5 @@
 'use client';
 
-import KiroIcon from './KiroIcon';
-
 export default function Footer() {
     return (
         <footer className="bg-background border-t border-foreground/10 py-6">
@@ -12,9 +10,9 @@ export default function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors duration-200 cursor-pointer"
-                        aria-label="View source code on GitHub - Made with love, coffee, and Kiro"
+                        aria-label="View source code on GitHub - Made with love & coffee"
                     >
-                        Made with love❤️, coffee☕, and Kiro <KiroIcon className="w-4 h-5" />
+                        Made with love❤️ & coffee☕
                     </a>
                 </div>
             </div>

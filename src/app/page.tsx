@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { Hero, WhatIDo, LiveDemo, Contact, ScrollIndicator, SlideNavigation, Footer } from '@/components';
+import { Hero, WhatIDo, Contact, ScrollIndicator, SlideNavigation, Footer } from '@/components';
 import { ServiceCard } from '@/types';
 import { CloudIcon, AutomationIcon, AIIcon } from '@/components/Icons';
 
@@ -9,7 +9,6 @@ export default function Home() {
   // Refs for smooth scrolling
   const heroRef = useRef<HTMLDivElement>(null);
   const whatIDoRef = useRef<HTMLDivElement>(null);
-  const demoRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   // Service data for What I Do section
@@ -39,12 +38,11 @@ export default function Home() {
     });
   };
 
-  const scrollToDemo = () => scrollToSection(demoRef);
   const scrollToContact = () => scrollToSection(contactRef);
 
   // Handle slide navigation
   const handleSlideChange = (slideIndex: number) => {
-    const refs = [heroRef, whatIDoRef, demoRef, contactRef];
+    const refs = [heroRef, whatIDoRef, contactRef];
     scrollToSection(refs[slideIndex]);
   };
 
@@ -53,24 +51,22 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only enable keyboard navigation on desktop
       if (window.innerWidth < 1024) return;
-      
+
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         const currentScroll = window.scrollY;
         const viewportHeight = window.innerHeight;
         const currentSlide = Math.round(currentScroll / viewportHeight);
-        
+
         if (currentSlide === 0) scrollToSection(whatIDoRef);
-        else if (currentSlide === 1) scrollToSection(demoRef);
-        else if (currentSlide === 2) scrollToSection(contactRef);
+        else if (currentSlide === 1) scrollToSection(contactRef);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         const currentScroll = window.scrollY;
         const viewportHeight = window.innerHeight;
         const currentSlide = Math.round(currentScroll / viewportHeight);
-        
-        if (currentSlide === 3) scrollToSection(demoRef);
-        else if (currentSlide === 2) scrollToSection(whatIDoRef);
+
+        if (currentSlide === 2) scrollToSection(whatIDoRef);
         else if (currentSlide === 1) scrollToSection(heroRef);
       }
     };
@@ -90,7 +86,7 @@ export default function Home() {
       <main id="main-content">
         {/* Hero Section - Slide 1 */}
         <div ref={heroRef} className="min-h-screen lg:h-screen lg:snap-start">
-          <Hero onDemoClick={scrollToDemo} onContactClick={scrollToContact} />
+          <Hero onContactClick={scrollToContact} />
         </div>
 
         {/* What I Do Section - Slide 2 */}
@@ -98,12 +94,7 @@ export default function Home() {
           <WhatIDo services={services} />
         </div>
 
-        {/* Live Demo Section - Slide 3 */}
-        <div ref={demoRef} id="demo" className="min-h-screen lg:h-screen lg:snap-start">
-          <LiveDemo />
-        </div>
-
-        {/* Contact Section - Slide 4 */}
+        {/* Contact Section - Slide 3 */}
         <div ref={contactRef} id="contact" className="min-h-screen lg:h-screen lg:snap-start">
           <Contact />
         </div>

@@ -3,7 +3,7 @@
 import { HeroProps } from '@/types';
 import ParticleBackground from './ParticleBackground';
 
-export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
+export default function Hero({ onContactClick }: HeroProps) {
   return (
     <section className="relative min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-8 lg:py-0" aria-labelledby="hero-heading">
       <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -27,15 +27,7 @@ export default function Hero({ onDemoClick, onContactClick }: HeroProps) {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-600 mb-8 lg:mb-16">
-          <button
-            onClick={onDemoClick}
-            className="group relative px-8 py-4 bg-accent text-background font-semibold rounded-lg transition-all duration-300 hover:bg-accent/90 hover:scale-105 hover:shadow-lg hover:shadow-accent/25 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
-            aria-label="Try the interactive Marko AI demo"
-          >
-            <span className="relative z-10">Speak with Marko AI</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent/80 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-          
+
           <button
             onClick={onContactClick}
             className="group px-8 py-4 border-2 border-foreground/20 text-foreground font-semibold rounded-lg transition-all duration-300 hover:border-accent hover:text-accent hover:scale-105 hover:shadow-lg hover:shadow-foreground/10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Ubuntu } from 'next/font/google';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { CustomCursor } from '@/components';
+import { CustomCursor, ThemeToggle, LightOverlay, ThemeProvider } from '@/components';
 import StructuredData from '@/components/StructuredData';
 import Analytics from '@/components/Analytics';
 
@@ -16,6 +16,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const ubuntu = Ubuntu({
+  weight: ['300', '400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-ubuntu',
+});
+
 export const metadata: Metadata = {
   title: {
     default: 'Marko Krajcheski - AI • Cloud • Automation Expert',
@@ -23,8 +29,8 @@ export const metadata: Metadata = {
   },
   description: 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold with cutting-edge technology.',
   keywords: [
-    'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
-    'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions', 
+    'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer',
+    'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions',
     'DevOps', 'CI/CD pipelines', 'infrastructure as code', 'cloud migration',
     'serverless applications', 'API development', 'microservices', 'cloud optimization'
   ],
@@ -92,7 +98,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a0a',
+  themeColor: '#d4f1f4',
   width: 'device-width',
   initialScale: 1,
 };
@@ -103,23 +109,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en" className="overflow-x-hidden" suppressHydrationWarning>
       <head>
         <StructuredData />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'light';
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ubuntu.variable} antialiased overflow-x-hidden`}
       >
-        <a 
-          href="#main-content" 
+        <a
+          href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-background focus:rounded-lg focus:font-semibold"
         >
           Skip to main content
         </a>
         <Analytics />
         <ErrorBoundary>
-          <CustomCursor />
-          {children}
+          <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={false}>
+            <LightOverlay />
+            <ThemeToggle />
+            <CustomCursor />
+            {children}
+          </ThemeProvider>
         </ErrorBoundary>
       </body>
     </html>

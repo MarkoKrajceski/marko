@@ -2,17 +2,6 @@
 // API REQUEST/RESPONSE TYPES
 // =============================================================================
 
-export interface PitchRequest {
-  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other';
-  query: string;
-}
-
-export interface PitchResponse {
-  pitch: string;
-  confidence: number;
-  timestamp: string;
-  requestId: string;
-}
 
 export interface LeadRequest {
   name: string;
@@ -62,7 +51,6 @@ export interface ApiError extends Error {
 // =============================================================================
 
 export interface HeroProps {
-  onDemoClick: () => void;
   onContactClick: () => void;
 }
 
@@ -76,17 +64,6 @@ export interface WhatIDoProps {
   services: ServiceCard[];
 }
 
-export interface DemoState {
-  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other' | '';
-  query: string;
-  loading: boolean;
-  result: PitchResponse | null;
-  error: string | null;
-}
-
-export interface LiveDemoProps {
-  className?: string;
-}
 
 export interface ContactForm {
   name: string;
@@ -116,15 +93,6 @@ export interface BaseDynamoDBItem {
   ttl: number;
 }
 
-export interface PitchAnalyticsItem extends BaseDynamoDBItem {
-  pk: `pitch#${string}`; // pitch#${requestId}
-  sk: `time#${string}`;  // time#${isoTimestamp}
-  role: 'recruiter' | 'cto' | 'product' | 'founder' | 'other';
-  query: string;
-  ipHash: string;
-  userAgentHash: string;
-  confidence: number;
-}
 
 export interface LeadCaptureItem extends BaseDynamoDBItem {
   pk: `lead#${string}`;   // lead#${email}
@@ -143,7 +111,7 @@ export interface AnalyticsCounterItem extends BaseDynamoDBItem {
 }
 
 // Union type for all DynamoDB items
-export type DynamoDBItem = PitchAnalyticsItem | LeadCaptureItem | AnalyticsCounterItem;
+export type DynamoDBItem = LeadCaptureItem | AnalyticsCounterItem;
 
 // =============================================================================
 // UTILITY TYPES AND ENUMS
@@ -235,12 +203,6 @@ export interface ContactFormValidation extends FormValidation {
   };
 }
 
-export interface PitchFormValidation extends FormValidation {
-  errors: {
-    role?: string;
-    query?: string;
-  };
-}
 
 // =============================================================================
 // ANALYTICS AND METRICS TYPES
@@ -256,11 +218,6 @@ export interface RequestMetrics {
   ipAddress?: string;
 }
 
-export interface PitchMetrics extends RequestMetrics {
-  role: UserRole;
-  query: string;
-  confidence: number;
-}
 
 // =============================================================================
 // ENVIRONMENT AND CONFIGURATION TYPES
@@ -294,9 +251,6 @@ export const isErrorResponse = (response: unknown): response is ErrorResponse =>
   return !!(response && typeof response === 'object' && response !== null && 'error' in response && (response as ErrorResponse).error === true);
 };
 
-export const isPitchAnalyticsItem = (item: DynamoDBItem): item is PitchAnalyticsItem => {
-  return item.pk.startsWith('pitch#');
-};
 
 export const isLeadCaptureItem = (item: DynamoDBItem): item is LeadCaptureItem => {
   return item.pk.startsWith('lead#');

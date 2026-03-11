@@ -62,11 +62,28 @@ export default function ParticleBackground() {
     const drawParticles = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Get the accent color from CSS variables
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+      // Basic hex to rgb helper for the canvas
+      const getRGB = (hex: string) => {
+        if (hex.startsWith('#')) {
+          const r = parseInt(hex.slice(1, 3), 16);
+          const g = parseInt(hex.slice(3, 5), 16);
+          const b = parseInt(hex.slice(5, 7), 16);
+          return `${r}, ${g}, ${b}`;
+        }
+        // Fallback for named colors or other formats if needed
+        return hex === '#0077b6' ? '0, 119, 182' : '250, 204, 21';
+      };
+
+      const rgb = getRGB(accentColor);
+
       // Draw particles
       particlesRef.current.forEach(particle => {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(250, 204, 21, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(${rgb}, ${particle.opacity})`;
         ctx.fill();
       });
 
@@ -81,7 +98,7 @@ export default function ParticleBackground() {
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(250, 204, 21, ${0.1 * (1 - distance / 100)})`;
+            ctx.strokeStyle = `rgba(${rgb}, ${0.1 * (1 - distance / 100)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -117,7 +134,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-30"
+      className="fixed inset-0 pointer-events-none opacity-20"
       style={{ zIndex: -1 }}
     />
   );

@@ -11,13 +11,13 @@ interface SEOConfig {
 
 export function generateSEO(config: SEOConfig): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marko.business';
-  
+
   const {
     title = 'Marko Krajcheski - AI • Cloud • Automation Expert',
     description = 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
     keywords = [
-      'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer', 
-      'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions', 
+      'marko krajcheski', 'marko business', 'cloud consultant', 'serverless architecture', 'AWS expert', 'automation engineer',
+      'AI solutions', 'full-stack developer', 'Next.js', 'Lambda functions',
       'DevOps', 'CI/CD pipelines', 'infrastructure as code', 'cloud migration'
     ],
     image = '/og-image.png',
@@ -81,11 +81,6 @@ export const seoConfigs = {
     description: 'Marko Krajcheski - Expert full-stack developer and AWS cloud consultant specializing in serverless architecture, automation pipelines, and applied AI solutions. I help businesses automate the boring and scale the bold.',
     url: '/',
   },
-  demo: {
-    title: 'Live Demo - AI Pitch Generator | Marko',
-    description: 'Experience real-time AI pitch generation powered by AWS Lambda. See how I build scalable serverless applications with practical AI integration.',
-    url: '/#demo',
-  },
   contact: {
     title: 'Get in Touch - Cloud & AI Consulting | Marko',
     description: 'Ready to automate the boring and scale the bold? Contact me for cloud architecture consulting, serverless development, and applied AI solutions.',
@@ -96,7 +91,7 @@ export const seoConfigs = {
 // Schema.org structured data generators
 export function generatePersonSchema() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marko.business';
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -132,7 +127,7 @@ export function generatePersonSchema() {
 
 export function generateOrganizationSchema() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marko.business';
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "Organization",

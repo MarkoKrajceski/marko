@@ -1,5 +1,7 @@
-// Static exports for critical components (above the fold)
 export { default as Hero } from './Hero';
+export { default as ThemeToggle } from './ThemeToggle';
+export { default as LightOverlay } from './LightOverlay';
+export { ThemeProvider } from './ThemeProvider';
 export * from './Icons';
 
 // Dynamic imports for non-critical components (below the fold)
@@ -9,9 +11,7 @@ export const WhatIDo = dynamic(() => import('./WhatIDo'), {
   loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,
 });
 
-export const LiveDemo = dynamic(() => import('./LiveDemo'), {
-  loading: () => <div className="animate-pulse bg-zinc-800 h-64 rounded-lg" />,
-});
+
 
 export const Contact = dynamic(() => import('./Contact'), {
   loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,

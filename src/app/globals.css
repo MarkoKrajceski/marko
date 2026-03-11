@@ -1,11 +1,118 @@
 @import 'tailwindcss';
 
 :root {
+  --background: #d4f1f4;
+  --foreground: #013a63;
+  --accent: #0077b6;
+  --secondary: #90e0ef;
+  --muted: #025a97;
+}
+
+[data-theme='dark'] {
   --background: #0a0a0a;
   --foreground: #ffffff;
   --accent: #facc15;
   --secondary: #f7dce6;
   --muted: #e4e4e7;
+}
+
+[data-theme='light'] {
+  --background: #d4f1f4;
+  --foreground: #013a63;
+  --accent: #0077b6;
+  --secondary: #90e0ef;
+  --muted: #025a97;
+  background-image: linear-gradient(135deg, #d4f1f4 0%, #aed9e0 100%);
+  font-family: var(--font-ubuntu), sans-serif;
+}
+
+[data-theme='light'] .bg-background {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='light'] .bg-accent {
+  background: linear-gradient(180deg, #90e0ef 0%, #00b4d8 50%, #0096c7 51%, #0077b6 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.9), 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='light'] .bg-accent:hover {
+  background: linear-gradient(180deg, #caf0f8 0%, #48cae4 50%, #00b4d8 51%, #0096c7 100%);
+}
+
+[data-theme='light'] .border-foreground\/10 {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme='light'] .border-foreground\/20 {
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.light-overlay {
+  display: none;
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+[data-theme='light'] .light-overlay {
+  display: block;
+}
+
+.light-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.1) 60%, transparent 100%);
+  box-shadow:
+    inset 0 0 25px rgba(255, 255, 255, 0.6),
+    inset 10px 0 45px rgba(255, 255, 255, 0.5),
+    inset -10px 0 25px rgba(0, 180, 216, 0.3),
+    0 0 15px rgba(255, 255, 255, 0.4),
+    inset 0 0 2px rgba(255, 255, 255, 1);
+  top: 100%;
+  animation: float-up infinite linear;
+  filter: blur(0.5px);
+  backdrop-filter: blur(1px);
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 0.8;
+  }
+
+  25% {
+    transform: translateY(-30vh) translateX(15px) scale(1.1);
+  }
+
+  50% {
+    transform: translateY(-60vh) translateX(-15px) scale(1.2);
+  }
+
+  75% {
+    transform: translateY(-90vh) translateX(10px) scale(1.1);
+  }
+
+  95% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-125vh) translateX(0) scale(1.4);
+    opacity: 0;
+  }
 }
 
 @theme inline {
@@ -33,10 +140,16 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-ubuntu, var(--font-sans, Arial, Helvetica, sans-serif));
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  background-image: linear-gradient(135deg, #d4f1f4 0%, #aed9e0 100%);
+}
+
+[data-theme='dark'] body {
+  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
+  background-image: none;
 }
 
 /* Custom animations */
@@ -323,6 +436,32 @@ body {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* View Transition API styles for theme "wave" effect */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: reveal-circle 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes reveal-circle {
+  from {
+    clip-path: circle(0% at var(--click-x, 50%) var(--click-y, 50%));
+  }
+
+  to {
+    clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
+  }
 }
 
 /* Reduce motion for users who prefer it */

@@ -190,9 +190,9 @@ export default function Contact({ className = '' }: ContactProps) {
                 id="name"
                 value={state.form.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.name
-                    ? 'border-red-500 focus:border-red-500'
-                    : 'border-foreground/20 focus:border-accent'
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground placeholder:text-muted focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.name
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-foreground/20 focus:border-accent'
                   }`}
                 placeholder="Your full name"
                 aria-describedby={fieldErrors.name ? 'name-error' : undefined}
@@ -215,9 +215,9 @@ export default function Contact({ className = '' }: ContactProps) {
                 id="email"
                 value={state.form.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.email
-                    ? 'border-red-500 focus:border-red-500'
-                    : 'border-foreground/20 focus:border-accent'
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground placeholder:text-muted focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 ${fieldErrors.email
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-foreground/20 focus:border-accent'
                   }`}
                 placeholder="your.email@example.com"
                 aria-describedby={fieldErrors.email ? 'email-error' : undefined}
@@ -240,9 +240,9 @@ export default function Contact({ className = '' }: ContactProps) {
                 rows={4}
                 value={state.form.message}
                 onChange={(e) => handleInputChange('message', e.target.value)}
-                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 resize-vertical ${fieldErrors.message
-                    ? 'border-red-500 focus:border-red-500'
-                    : 'border-foreground/20 focus:border-accent'
+                className={`w-full px-4 py-3 bg-background border rounded-lg text-foreground placeholder:text-muted focus:ring-2 focus:ring-accent/20 focus:outline-none transition-colors duration-200 resize-vertical ${fieldErrors.message
+                  ? 'border-red-500 focus:border-red-500'
+                  : 'border-foreground/20 focus:border-accent'
                   }`}
                 placeholder="Tell me about your project, timeline, and how I can help..."
                 aria-describedby={fieldErrors.message ? 'message-error' : 'message-help'}
