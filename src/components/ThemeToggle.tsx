@@ -51,12 +51,12 @@ export default function ThemeToggle() {
             }, 0);
         };
 
-        if (!(document as any).startViewTransition) {
+        // Check if View Transition API is supported
+        if ('startViewTransition' in document) {
+            document.startViewTransition(update);
+        } else {
             update();
-            return;
         }
-
-        (document as any).startViewTransition(update);
     };
 
     if (!mounted) return null;
