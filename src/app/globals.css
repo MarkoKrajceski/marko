@@ -61,10 +61,32 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  /* GPU acceleration for better mobile performance */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 [data-theme='light'] .light-overlay {
   display: block;
+}
+
+/* Optimize child elements for mobile */
+.light-overlay > div {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Disable expensive animations on mobile */
+@media (max-width: 768px) {
+  .light-overlay {
+    will-change: auto;
+  }
+  
+  .light-bubble {
+    filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .light-bubble {
