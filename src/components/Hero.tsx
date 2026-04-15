@@ -3,7 +3,7 @@
 import { HeroProps } from '@/types';
 import ParticleBackground from './ParticleBackground';
 
-export default function Hero({ onContactClick }: HeroProps) {
+export default function Hero({ onContactClick, onPortfolioClick }: HeroProps) {
   return (
     <section className="relative min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-8 lg:py-0" aria-labelledby="hero-heading">
       <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -35,6 +35,16 @@ export default function Hero({ onContactClick }: HeroProps) {
           >
             <span className="relative z-10">Get in Touch</span>
           </button>
+
+          {onPortfolioClick && (
+            <button
+              onClick={onPortfolioClick}
+              className="group px-8 py-4 border-2 border-accent/60 bg-accent/5 text-accent font-semibold rounded-lg transition-all duration-300 hover:bg-accent hover:text-background hover:scale-105 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
+              aria-label="Navigate to portfolio section"
+            >
+              <span className="relative z-10">View Portfolio</span>
+            </button>
+          )}
         </div>
 
         {/* Scroll Hint - Only show on desktop */}

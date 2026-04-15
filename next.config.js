@@ -137,7 +137,7 @@ const nextConfig = {
   },
 
   // Webpack configuration for performance optimization
-  webpack: (config, { buildId, webpack }) => {
+  webpack: (config, { buildId, webpack, isServer }) => {
     // Add build-time environment injection
     config.plugins.push(
       new webpack.DefinePlugin({
@@ -158,28 +158,32 @@ const nextConfig = {
       );
     }
 
-    // Optimize chunks for better caching
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
-            reuseExistingChunk: true,
+    // Optimize chunks for better caching — client bundle only.
+    // Applying custom splitChunks to the server bundle can pull browser-only
+    // modules into server output, causing "self is not defined" at SSR time.
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              priority: 10,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 5,
+              reuseExistingChunk: true,
+            },
           },
         },
-      },
-    };
+      };
+    }
 
     return config;
   },

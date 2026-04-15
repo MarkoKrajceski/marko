@@ -2,12 +2,15 @@
 import { useEffect, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
 import { BoltIcon, DropletIcon } from './Icons';
 
 export default function ThemeToggle() {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const pathname = usePathname();
+    const isPortfolioRoute = pathname?.startsWith('/portfolio');
 
     useEffect(() => {
         setMounted(true);
@@ -67,7 +70,7 @@ export default function ThemeToggle() {
         }
     };
 
-    if (!mounted) return null;
+    if (!mounted || isPortfolioRoute) return null;
 
     const isDark = theme === 'dark';
 

@@ -8,7 +8,7 @@ interface SlideNavigationProps {
 
 export default function SlideNavigation({ onSlideChange }: SlideNavigationProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = ['Hero', 'Services', 'Contact'];
+  const slides = ['Hero', 'Services', 'Portfolio', 'Contact'];
 
   useEffect(() => {
     const handleScroll = () => {

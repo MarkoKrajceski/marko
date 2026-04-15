@@ -52,6 +52,7 @@ export interface ApiError extends Error {
 
 export interface HeroProps {
   onContactClick: () => void;
+  onPortfolioClick?: () => void;
 }
 
 export interface ServiceCard {

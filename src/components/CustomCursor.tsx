@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isPointer, setIsPointer] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isPortfolioRoute = pathname?.startsWith('/portfolio');
 
   useEffect(() => {
     let animationId: number;
@@ -65,7 +68,7 @@ export default function CustomCursor() {
     return () => mediaQuery.removeEventListener('change', checkDesktop);
   }, []);
 
-  if (!isDesktop || !isVisible) return null;
+  if (!isDesktop || !isVisible || isPortfolioRoute) return null;
 
   return (
     <div

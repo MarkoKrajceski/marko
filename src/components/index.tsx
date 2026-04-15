@@ -17,6 +17,10 @@ export const Contact = dynamic(() => import('./Contact'), {
   loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,
 });
 
+export const Portfolio = dynamic(() => import('./Portfolio'), {
+  loading: () => <div className="animate-pulse bg-zinc-800 h-96 rounded-lg" />,
+});
+
 // Client-side only components
 export const CustomCursor = dynamic(() => import('./CustomCursor'));
 

@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function LightOverlay() {
     const [bubbles, setBubbles] = useState<{ id: number; size: number; left: number; delay: number; duration: number }[]>([]);
     const [isMobile, setIsMobile] = useState(false);
+    const pathname = usePathname();
+    const isPortfolioRoute = pathname?.startsWith('/portfolio');
 
     useEffect(() => {
         // Detect mobile
@@ -28,6 +31,8 @@ export default function LightOverlay() {
 
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+
+    if (isPortfolioRoute) return null;
 
     return (
         <div className="light-overlay opacity-50 relative z-[-1]" aria-hidden="true">

@@ -1,14 +1,15 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
-import { Hero, WhatIDo, Contact, ScrollIndicator, SlideNavigation, Footer } from '@/components';
+import { Hero, WhatIDo, Portfolio, Contact, ScrollIndicator, SlideNavigation, Footer } from '@/components';
 import { ServiceCard } from '@/types';
-import { CloudIcon, AutomationIcon, AIIcon } from '@/components/Icons';
+import { CloudIcon, AutomationIcon, AIIcon, FullStackIcon } from '@/components/Icons';
 
 export default function Home() {
   // Refs for smooth scrolling
   const heroRef = useRef<HTMLDivElement>(null);
   const whatIDoRef = useRef<HTMLDivElement>(null);
+  const portfolioRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   // Service data for What I Do section
@@ -28,6 +29,11 @@ export default function Home() {
       description: 'Integrate practical AI solutions into existing workflows, from intelligent automation to data processing, focusing on real business value over hype.',
       icon: <AIIcon className="w-12 h-12" />,
     },
+    {
+      title: 'Full-Stack Development',
+      description: 'I own both sides of the stack — pixel-perfect frontend interfaces built with React and Next.js, paired with resilient backend APIs, databases, and infrastructure designed to scale without drama.',
+      icon: <FullStackIcon className="w-12 h-12" />,
+    },
   ];
 
   // Smooth scroll handlers
@@ -39,10 +45,11 @@ export default function Home() {
   };
 
   const scrollToContact = () => scrollToSection(contactRef);
+  const scrollToPortfolio = () => scrollToSection(portfolioRef);
 
   // Handle slide navigation
   const handleSlideChange = (slideIndex: number) => {
-    const refs = [heroRef, whatIDoRef, contactRef];
+    const refs = [heroRef, whatIDoRef, portfolioRef, contactRef];
     scrollToSection(refs[slideIndex]);
   };
 
@@ -59,14 +66,16 @@ export default function Home() {
         const currentSlide = Math.round(currentScroll / viewportHeight);
 
         if (currentSlide === 0) scrollToSection(whatIDoRef);
-        else if (currentSlide === 1) scrollToSection(contactRef);
+        else if (currentSlide === 1) scrollToSection(portfolioRef);
+        else if (currentSlide === 2) scrollToSection(contactRef);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         const currentScroll = window.scrollY;
         const viewportHeight = window.innerHeight;
         const currentSlide = Math.round(currentScroll / viewportHeight);
 
-        if (currentSlide === 2) scrollToSection(whatIDoRef);
+        if (currentSlide === 3) scrollToSection(portfolioRef);
+        else if (currentSlide === 2) scrollToSection(whatIDoRef);
         else if (currentSlide === 1) scrollToSection(heroRef);
       }
     };
@@ -86,7 +95,7 @@ export default function Home() {
       <main id="main-content">
         {/* Hero Section - Slide 1 */}
         <div ref={heroRef} className="min-h-screen lg:h-screen lg:snap-start">
-          <Hero onContactClick={scrollToContact} />
+          <Hero onContactClick={scrollToContact} onPortfolioClick={scrollToPortfolio} />
         </div>
 
         {/* What I Do Section - Slide 2 */}
@@ -94,7 +103,12 @@ export default function Home() {
           <WhatIDo services={services} />
         </div>
 
-        {/* Contact Section - Slide 3 */}
+        {/* Portfolio Section - Slide 3 */}
+        <div ref={portfolioRef} className="min-h-screen lg:h-screen lg:snap-start">
+          <Portfolio />
+        </div>
+
+        {/* Contact Section - Slide 4 */}
         <div ref={contactRef} id="contact" className="min-h-screen lg:h-screen lg:snap-start">
           <Contact />
         </div>

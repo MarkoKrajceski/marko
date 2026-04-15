@@ -7,21 +7,21 @@ export default function WhatIDo({ services }: WhatIDoProps) {
     <section className="min-h-screen lg:h-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-0" aria-labelledby="services-heading">
       <div className="max-w-6xl mx-auto w-full">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 id="services-heading" className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+        <div className="text-center mb-8">
+          <h2 id="services-heading" className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             What I Do
           </h2>
-          <p className="text-lg text-muted max-w-2xl mx-auto">
+          <p className="text-base text-muted max-w-2xl mx-auto">
             I specialize in building scalable, automated solutions that help businesses move faster and more efficiently.
           </p>
         </div>
 
         {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <div
               key={service.title}
-              className="group relative p-8 bg-background border border-foreground/10 rounded-xl transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-2"
+              className="group relative p-6 bg-background border border-foreground/10 rounded-xl transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/10 hover:-translate-y-1"
               style={{
                 animationDelay: `${index * 0.2}s`
               }}
@@ -32,7 +32,7 @@ export default function WhatIDo({ services }: WhatIDoProps) {
               {/* Content */}
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="mb-6 text-accent group-hover:scale-110 transition-transform duration-300">
+                <div className="mb-4 text-accent w-fit origin-top-left group-hover:scale-110 transition-transform duration-300">
                   {service.icon}
                 </div>
 
