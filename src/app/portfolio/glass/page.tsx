@@ -144,12 +144,24 @@ export default function GlassPage() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Scroll position for parallax
+  // Scroll position for parallax — desktop only. On mobile this firehose
+  // of state updates paired with backdrop-filter repaints causes severe jitter.
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
+    if (isMobile) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        setScrollY(window.scrollY);
+        raf = 0;
+      });
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [isMobile]);
 
   // 3D tilt handler for hero card
   const handleMouseMove = useCallback(
@@ -246,6 +258,15 @@ export default function GlassPage() {
           background-size: 200% 100%;
           animation: shimmer 3s ease-in-out infinite;
         }
+        /* Mobile: kill expensive infinite animations that thrash the GPU */
+        @media (max-width: 767px) {
+          .glass-shimmer { animation: none !important; }
+          .glass-blob, .glass-orb { animation: none !important; }
+          .glass-orb-extra { display: none !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .glass-shimmer, .glass-blob, .glass-orb { animation: none !important; }
+        }
       `}</style>
 
       {/* ────────────────────── ANIMATED BACKGROUND ───────────────────────── */}
@@ -260,7 +281,7 @@ export default function GlassPage() {
 
         {/* Color blobs */}
         <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-30"
+          className="glass-blob absolute w-[600px] h-[600px] rounded-full opacity-30"
           style={{
             background: 'radial-gradient(circle, #38bdf8 0%, transparent 70%)',
             top: '10%', left: '15%',
@@ -269,7 +290,7 @@ export default function GlassPage() {
           }}
         />
         <div
-          className="absolute w-[500px] h-[500px] rounded-full opacity-25"
+          className="glass-blob absolute w-[500px] h-[500px] rounded-full opacity-25"
           style={{
             background: 'radial-gradient(circle, #818cf8 0%, transparent 70%)',
             top: '40%', right: '10%',
@@ -278,7 +299,7 @@ export default function GlassPage() {
           }}
         />
         <div
-          className="absolute w-[700px] h-[700px] rounded-full opacity-20"
+          className="glass-blob absolute w-[700px] h-[700px] rounded-full opacity-20"
           style={{
             background: 'radial-gradient(circle, #c084fc 0%, transparent 70%)',
             bottom: '10%', left: '30%',
@@ -287,7 +308,7 @@ export default function GlassPage() {
           }}
         />
         <div
-          className="absolute w-[400px] h-[400px] rounded-full opacity-25"
+          className="glass-blob absolute w-[400px] h-[400px] rounded-full opacity-25"
           style={{
             background: 'radial-gradient(circle, #f472b6 0%, transparent 70%)',
             top: '60%', left: '60%',
@@ -306,7 +327,7 @@ export default function GlassPage() {
         ].map((orb, i) => (
           <div
             key={i}
-            className="absolute rounded-full"
+            className={`absolute rounded-full ${i < 2 ? 'glass-orb' : 'glass-orb-extra'}`}
             style={{
               width: orb.size,
               height: orb.size,
@@ -325,7 +346,8 @@ export default function GlassPage() {
       </div>
 
       {/* ────────────────────── FLOATING NOTIFICATIONS ────────────────────── */}
-      <div className="fixed inset-0 z-10 pointer-events-none overflow-hidden">
+      {/* Hidden on mobile: fixed-position backdrop-blur + animation tanks mobile GPUs */}
+      <div className="fixed inset-0 z-10 pointer-events-none overflow-hidden hidden md:block">
         {notifications.map((n, i) => (
           <div
             key={i}
@@ -358,7 +380,8 @@ export default function GlassPage() {
       </div>
 
       {/* ────────────────────── PARALLAX DEPTH LAYERS ─────────────────────── */}
-      <div className="fixed inset-0 z-[1] pointer-events-none">
+      {/* Hidden on mobile: backdrop-filter + live scroll transforms are prohibitively expensive */}
+      <div className="fixed inset-0 z-[1] pointer-events-none hidden md:block">
         {/* Far layer */}
         <div
           className="absolute w-64 h-64 rounded-3xl"
