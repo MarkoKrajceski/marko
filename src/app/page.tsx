@@ -53,6 +53,16 @@ export default function Home() {
     scrollToSection(refs[slideIndex]);
   };
 
+  // Restore scroll position to portfolio section when returning from a portfolio page
+  useEffect(() => {
+    if (sessionStorage.getItem('returnToPortfolio')) {
+      sessionStorage.removeItem('returnToPortfolio');
+      requestAnimationFrame(() => {
+        portfolioRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+      });
+    }
+  }, []);
+
   // Add keyboard navigation for slides (desktop only)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

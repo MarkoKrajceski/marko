@@ -182,6 +182,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <Link
       ref={cardRef}
       href={`/portfolio/${project.slug}`}
+      onClick={() => sessionStorage.setItem('returnToPortfolio', 'true')}
       className={`group relative block overflow-hidden rounded-xl transition-all duration-500 hover:scale-[1.03] hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
       }`}
