@@ -486,6 +486,24 @@ body {
   }
 }
 
+/* clip-path is not GPU-composited; swap for an opacity fade on touch devices */
+@media (pointer: coarse) {
+  ::view-transition-old(root) {
+    z-index: 2;
+    animation: mobile-theme-fade 0.35s ease-out forwards;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 1;
+    animation: none;
+  }
+
+  @keyframes mobile-theme-fade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
 
